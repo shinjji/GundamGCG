@@ -1,0 +1,3030 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MOBILE SUIT REGISTRY — Gundam GCG</title>
+    <link rel="icon" type="image/png" href="https://wsrv.nl/?url=https://drive.google.com/uc?id=1xnltta4ZvcZY5vZfsBmR9xZCQv-rUJ0W" />
+    <script>
+      (function() {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+          const c = document.createElement('canvas');
+          c.width = 64; c.height = 64;
+          const ctx = c.getContext('2d');
+          const r = 14;
+          ctx.beginPath();
+          ctx.moveTo(r, 0);
+          ctx.lineTo(64 - r, 0);
+          ctx.quadraticCurveTo(64, 0, 64, r);
+          ctx.lineTo(64, 64 - r);
+          ctx.quadraticCurveTo(64, 64, 64 - r, 64);
+          ctx.lineTo(r, 64);
+          ctx.quadraticCurveTo(0, 64, 0, 64 - r);
+          ctx.lineTo(0, r);
+          ctx.quadraticCurveTo(0, 0, r, 0);
+          ctx.closePath();
+          ctx.clip();
+          ctx.drawImage(img, 0, 0, 64, 64);
+          const link = document.querySelector("link[rel='icon']");
+          link.href = c.toDataURL('image/png');
+        };
+        img.src = 'https://wsrv.nl/?url=https://drive.google.com/uc?id=1xnltta4ZvcZY5vZfsBmR9xZCQv-rUJ0W';
+      })();
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Semi+Condensed:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --white: #f0f2f5;
+        --plate: #e2e6eb;
+        --seam: #c8cdd6;
+        --navy: #1e3a5f;
+        --cobalt: #2a5298;
+        --red: #c0281a;
+        --red-dim: #8a1d10;
+        --gold: #c8902a;
+        --gold-lt: #e8b840;
+        --dark: #1a1f2a;
+        --ink: #0d1a2a;
+        --mid: #4a5568;
+        --dim: #8a96a8;
+        --green: #2e7d4f;
+        --shadow: rgba(30, 58, 95, 0.1);
+        --shadow-h: rgba(30, 58, 95, 0.2);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--white);
+        color: var(--ink);
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-weight: 400;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* Fine grid texture — like armour panel lines */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: linear-gradient(rgba(30, 58, 95, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(30, 58, 95, 0.03) 1px, transparent 1px);
+        background-size: 48px 48px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ===== HEADER ===== */
+      header {
+        position: relative;
+        z-index: 10;
+        background: var(--navy);
+        box-shadow:
+          0 3px 0 var(--red),
+          0 6px 24px var(--shadow-h);
+      }
+
+      .header-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2rem;
+        height: 80px;
+        gap: 1.5rem;
+        position: relative;
+      }
+
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        flex-shrink: 0;
+      }
+
+      /* RX-78-2 head SVG */
+      .rx78 {
+        width: 52px;
+        height: 52px;
+        object-fit: cover;
+        border-radius: 16px;
+        flex-shrink: 0;
+      }
+
+      .logo-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .logo-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.45rem;
+        letter-spacing: 0.14em;
+        color: var(--white);
+        line-height: 1;
+      }
+      .logo-title em {
+        color: var(--gold-lt);
+        font-style: normal;
+      }
+
+      .logo-sub {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.5rem;
+        letter-spacing: 0.35em;
+        color: rgba(255, 255, 255, 0.35);
+        text-transform: uppercase;
+      }
+
+      /* Header stats strip */
+      .hstats {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+      }
+
+      @media (max-width: 900px) {
+        .hstats {
+          display: none;
+        }
+      }
+
+      .hs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 1.4rem;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        gap: 1px;
+      }
+      .hs:first-child {
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .hs-num {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.35rem;
+        letter-spacing: 0.06em;
+        color: var(--gold-lt);
+        line-height: 1;
+      }
+      .hs-lbl {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.46rem;
+        letter-spacing: 0.25em;
+        color: rgba(255, 255, 255, 0.35);
+        text-transform: uppercase;
+      }
+
+      /* Nav */
+      nav {
+        display: flex;
+        gap: 0;
+        flex-shrink: 0;
+        height: 100%;
+        align-items: stretch;
+      }
+
+      nav button {
+        height: 100%;
+        background: transparent;
+        border: none;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.5);
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.9rem;
+        letter-spacing: 0.2em;
+        padding: 0 1.2rem;
+        cursor: pointer;
+        transition: all 0.16s;
+        white-space: nowrap;
+        position: relative;
+      }
+
+      nav button::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gold-lt);
+        transform: scaleX(0);
+        transition: transform 0.16s;
+      }
+
+      nav button:hover {
+        color: var(--white);
+        background: rgba(255, 255, 255, 0.05);
+      }
+      nav button:hover::after {
+        transform: scaleX(0.55);
+      }
+      nav button.active {
+        color: var(--white);
+        background: rgba(42, 82, 152, 0.45);
+      }
+      nav button.active::after {
+        transform: scaleX(1);
+      }
+
+      /* Offline */
+      #offline-indicator {
+        display: none;
+        align-items: center;
+        gap: 0.35rem;
+        background: rgba(192, 40, 26, 0.18);
+        border: 1px solid var(--red);
+        padding: 0.2rem 0.6rem;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.48rem;
+        letter-spacing: 0.15em;
+        color: #ff7060;
+        text-transform: uppercase;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      #offline-indicator.visible {
+        display: flex;
+      }
+      #offline-indicator .odot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #ff7060;
+        animation: blink 1.4s ease-in-out infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        }
+      }
+
+      /* ===== MAIN ===== */
+      main {
+        position: relative;
+        z-index: 1;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .page {
+        display: none;
+      }
+      .page.active {
+        display: block;
+      }
+
+      /* ===== SEC LABEL ===== */
+      .sec {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1.25rem;
+      }
+      .sec-text {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.3em;
+        color: var(--navy);
+      }
+      .sec-line {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--seam), transparent);
+      }
+      .sec-sq {
+        width: 7px;
+        height: 7px;
+        background: var(--cobalt);
+        transform: rotate(45deg);
+        flex-shrink: 0;
+        opacity: 0.7;
+      }
+
+      /* ===== PANEL ===== */
+      .panel {
+        background: #fff;
+        border: 1px solid var(--seam);
+        box-shadow: 0 2px 10px var(--shadow);
+        position: relative;
+      }
+      .panel.b {
+        border-left: 3px solid var(--cobalt);
+      }
+      .panel.r {
+        border-left: 3px solid var(--red);
+      }
+      .panel.g {
+        border-left: 3px solid var(--gold);
+      }
+      .panel-body {
+        padding: 1.25rem;
+      }
+
+      /* ===== HOME GRID ===== */
+      .home-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+      @media (max-width: 900px) {
+        .home-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ===== SORTIE OF THE DAY ===== */
+      .cotd-sub {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.56rem;
+        letter-spacing: 0.3em;
+        color: var(--dim);
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--plate);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .cotd-sub::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: var(--cobalt);
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .cotd-inner {
+        display: flex;
+        gap: 1.25rem;
+        align-items: flex-start;
+      }
+      .cotd-img-wrap {
+        flex-shrink: 0;
+        position: relative;
+      }
+
+      .cotd-img {
+        width: 148px;
+        height: 207px;
+        object-fit: cover;
+        display: block;
+        border: 1px solid var(--seam);
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .cotd-img:hover {
+        border-color: var(--cobalt);
+        box-shadow: 0 4px 16px var(--shadow-h);
+      }
+
+      .cotd-img-ph {
+        width: 148px;
+        height: 207px;
+        background: var(--plate);
+        border: 1px dashed var(--seam);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dim);
+        font-size: 0.65rem;
+        letter-spacing: 0.1em;
+      }
+
+      /* Rarity tab overlay top-right of card */
+      .rar-tab {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        padding: 2px 7px;
+        line-height: 1.5;
+        color: white;
+        background: var(--cobalt);
+      }
+      .rar-tab.C {
+        background: var(--seam);
+        color: var(--mid);
+      }
+      .rar-tab.CP {
+        background: #b0b8c8;
+        color: var(--mid);
+      }
+      .rar-tab.U {
+        background: #3a7a50;
+      }
+      .rar-tab.UP {
+        background: #2e9e60;
+      }
+      .rar-tab.R {
+        background: var(--cobalt);
+      }
+      .rar-tab.RP {
+        background: #1a6fd4;
+      }
+      .rar-tab.LR {
+        background: #6b3fb0;
+      }
+      .rar-tab.LRP {
+        background: #7a38c0;
+      }
+      .rar-tab.LRPP {
+        background: #9b2dd4;
+      }
+      .rar-tab.P {
+        background: var(--red);
+      }
+
+      .cotd-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .cotd-name {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.3rem;
+        letter-spacing: 0.05em;
+        color: var(--navy);
+        line-height: 1.15;
+        margin-bottom: 0.75rem;
+      }
+
+      .mrow {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.35rem;
+      }
+      .mkey {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.53rem;
+        letter-spacing: 0.2em;
+        color: var(--dim);
+        text-transform: uppercase;
+        min-width: 50px;
+      }
+      .mval {
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      /* Badges */
+      .badge {
+        display: inline-block;
+        padding: 0.1rem 0.5rem;
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.63rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .badge-set {
+        background: var(--navy);
+        color: white;
+      }
+      .badge-rar {
+        background: var(--cobalt);
+        color: white;
+      }
+      .badge-rar.C {
+        background: var(--seam);
+        color: var(--mid);
+      }
+      .badge-rar.CP {
+        background: #b0b8c8;
+        color: var(--mid);
+      }
+      .badge-rar.U {
+        background: #3a7a50;
+      }
+      .badge-rar.UP {
+        background: #2e9e60;
+      }
+      .badge-rar.R {
+        background: var(--cobalt);
+      }
+      .badge-rar.RP {
+        background: #1a6fd4;
+      }
+      .badge-rar.LR {
+        background: #6b3fb0;
+      }
+      .badge-rar.LRP {
+        background: #7a38c0;
+      }
+      .badge-rar.LRPP {
+        background: #9b2dd4;
+      }
+      .badge-rar.P {
+        background: var(--red);
+      }
+
+      .roll-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: var(--navy);
+        border: none;
+        color: white;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.82rem;
+        letter-spacing: 0.15em;
+        padding: 0.4rem 0.85rem;
+        cursor: pointer;
+        transition: all 0.16s;
+        margin-top: 0.8rem;
+        margin-right: 0.4rem;
+      }
+      .roll-btn:hover {
+        background: var(--cobalt);
+        box-shadow: 0 3px 10px var(--shadow-h);
+      }
+      .roll-btn.rd {
+        background: var(--red);
+      }
+      .roll-btn.rd:hover {
+        background: var(--red-dim);
+      }
+
+      /* Sync btn */
+      .sync-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        background: transparent;
+        border: 1.5px solid var(--gold);
+        color: var(--gold);
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.78rem;
+        letter-spacing: 0.18em;
+        padding: 0.28rem 0.75rem;
+        cursor: pointer;
+        transition: all 0.16s;
+        white-space: nowrap;
+      }
+      .sync-btn:hover {
+        background: var(--gold);
+        color: white;
+      }
+      .sync-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* ===== SEARCH ===== */
+      .search-wrap {
+        position: relative;
+        margin-bottom: 0.65rem;
+      }
+      .coll-controls .search-wrap {
+        margin-bottom: 0;
+        display: flex;
+        align-items: stretch;
+      }
+
+      .search-input {
+        width: 100%;
+        background: var(--plate);
+        border: 1px solid var(--seam);
+        border-left: 3px solid var(--cobalt);
+        color: var(--ink);
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        padding: 0.58rem 1rem 0.58rem 2.35rem;
+        outline: none;
+        transition: all 0.16s;
+        letter-spacing: 0.03em;
+      }
+      .search-input:focus {
+        background: white;
+        border-color: var(--cobalt);
+        box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+      }
+      .search-input::placeholder {
+        color: var(--dim);
+      }
+      .search-icon {
+        position: absolute;
+        left: 0.7rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--cobalt);
+        font-size: 0.88rem;
+        opacity: 0.75;
+      }
+
+      .frow {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.65rem;
+        flex-wrap: wrap;
+      }
+
+      .fsel {
+        flex: 1;
+        min-width: 100px;
+        background: var(--plate);
+        border: 1px solid var(--seam);
+        color: var(--ink);
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.42rem 0.65rem;
+        outline: none;
+        cursor: pointer;
+      }
+      .fsel:focus {
+        border-color: var(--cobalt);
+      }
+
+      .sresults {
+        max-height: 330px;
+        min-height: 280px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      .sresults::-webkit-scrollbar {
+        width: 3px;
+      }
+      .sresults::-webkit-scrollbar-track {
+        background: var(--plate);
+      }
+      .sresults::-webkit-scrollbar-thumb {
+        background: var(--cobalt);
+      }
+
+      .rcard {
+        background: var(--plate);
+        border: 1px solid var(--seam);
+        padding: 0.52rem 0.7rem;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        cursor: pointer;
+        transition: all 0.13s;
+      }
+      .rcard:hover {
+        background: white;
+        border-color: var(--cobalt);
+        border-left: 3px solid var(--cobalt);
+        box-shadow: 0 2px 8px var(--shadow);
+      }
+      .rthumb {
+        width: 30px;
+        height: 43px;
+        object-fit: cover;
+        border: 1px solid var(--seam);
+        flex-shrink: 0;
+      }
+      .rthumb-ph {
+        width: 30px;
+        height: 43px;
+        background: var(--seam);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.48rem;
+        color: var(--dim);
+      }
+      .rinfo {
+        flex: 1;
+        min-width: 0;
+      }
+      .rname {
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--ink);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 0.1rem;
+      }
+      .rsub {
+        font-size: 0.67rem;
+        color: var(--dim);
+      }
+      .rqty {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.95rem;
+        letter-spacing: 0.04em;
+        color: var(--navy);
+        flex-shrink: 0;
+      }
+
+      .sph {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: var(--dim);
+        padding: 2rem;
+      }
+      .sph-icon {
+        font-size: 1.8rem;
+        opacity: 0.2;
+      }
+      .sph p {
+        font-size: 0.73rem;
+        letter-spacing: 0.06em;
+        text-align: center;
+      }
+      .no-res {
+        text-align: center;
+        padding: 1.5rem;
+        color: var(--dim);
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+      }
+
+      /* ===== COLLECTION ===== */
+      .coll-controls {
+        display: flex;
+        gap: 0.55rem;
+        margin-bottom: 1.25rem;
+        align-items: stretch;
+        flex-wrap: wrap;
+      }
+
+      .coll-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(162px, 1fr));
+        gap: 0.8rem;
+      }
+
+      /* Card tile */
+      .ctile {
+        background: white;
+        border: 1px solid var(--seam);
+        cursor: pointer;
+        transition: all 0.17s;
+        position: relative;
+        box-shadow: 0 1px 4px var(--shadow);
+      }
+      .ctile.unowned {
+        border-color: rgba(192, 40, 26, 0.3);
+        opacity: 0.72;
+      }
+      .ctile:hover {
+        border-color: var(--sc, var(--cobalt));
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px var(--shadow-h);
+      }
+
+      .ctile-img-wrap {
+        overflow: hidden;
+        width: 100%;
+        position: relative;
+      }
+
+      /* Rarity coloured top bar */
+      .cbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--cobalt);
+        z-index: 2;
+      }
+      .cbar.C {
+        background: var(--seam);
+      }
+      .cbar.CP {
+        background: #b0b8c8;
+      }
+      .cbar.U {
+        background: #3a7a50;
+      }
+      .cbar.UP {
+        background: #2e9e60;
+      }
+      .cbar.R {
+        background: var(--cobalt);
+      }
+      .cbar.RP {
+        background: #1a6fd4;
+      }
+      .cbar.LR {
+        background: #6b3fb0;
+      }
+      .cbar.LRP {
+        background: #7a38c0;
+      }
+      .cbar.LRPP {
+        background: #9b2dd4;
+      }
+      .cbar.P {
+        background: var(--red);
+      }
+
+      .ctile-img {
+        width: 100%;
+        aspect-ratio: 2/3;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.25s;
+      }
+      .ctile:hover .ctile-img {
+        transform: scale(1.04);
+      }
+      .ctile-img-ph {
+        width: 100%;
+        aspect-ratio: 2/3;
+        background: var(--plate);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dim);
+        font-size: 0.58rem;
+        letter-spacing: 0.08em;
+        text-align: center;
+        padding: 0.5rem;
+      }
+      .ctile-info {
+        padding: 0.42rem 0.5rem;
+        border-top: 1px solid var(--plate);
+        background: white;
+      }
+      .ctile-name {
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: var(--ink);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 0.2rem;
+      }
+      .ctile-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .ctile-set {
+        font-size: 0.56rem;
+        color: var(--dim);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 72%;
+      }
+      .ctile-qty {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.82rem;
+        letter-spacing: 0.04em;
+        color: var(--navy);
+      }
+      .ctile-qty.q0 {
+        color: var(--red) !important;
+      }
+      .ctile-qty.q1 {
+        color: var(--green) !important;
+      }
+
+      .grey {
+        filter: grayscale(85%);
+        opacity: 0.7;
+        transition:
+          filter 0.2s,
+          opacity 0.2s;
+      }
+      .ctile:hover .grey {
+        filter: grayscale(40%);
+        opacity: 0.9;
+      }
+
+      /* Rarity chip filter */
+      #rar-wrap {
+        margin-bottom: 1.25rem;
+      }
+      .rar-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        cursor: pointer;
+        padding: 0.3rem 0;
+        user-select: none;
+        margin-bottom: 0.5rem;
+      }
+      .rar-toggle:hover .sec-text {
+        color: var(--cobalt);
+      }
+
+      .rar-chips-box {
+        display: none;
+        flex-wrap: wrap;
+        gap: 0.28rem;
+        padding: 0.6rem 0.8rem;
+        background: white;
+        border: 1px solid var(--seam);
+        border-left: 3px solid var(--gold);
+      }
+
+      .rchip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.22rem;
+        padding: 0.18rem 0.55rem;
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        cursor: pointer;
+        border: 1.5px solid var(--seam);
+        background: var(--plate);
+        color: var(--mid);
+        transition: all 0.13s;
+      }
+      .rchip:hover {
+        border-color: var(--cobalt);
+        color: var(--cobalt);
+        background: white;
+      }
+      .rchip.active {
+        border-color: var(--navy);
+        background: var(--navy);
+        color: white;
+      }
+
+      .rar-badge {
+        display: none;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.5rem;
+        color: var(--gold);
+        background: rgba(200, 144, 42, 0.1);
+        border: 1px solid rgba(200, 144, 42, 0.4);
+        padding: 0.08rem 0.32rem;
+        letter-spacing: 0.1em;
+      }
+
+      /* View toggle */
+      .vtoggle {
+        display: flex;
+        border: 1px solid var(--seam);
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .vtbtn {
+        background: var(--plate);
+        border: none;
+        border-right: 1px solid var(--seam);
+        color: var(--mid);
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        padding: 0 0.82rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.28rem;
+        transition: all 0.14s;
+        height: 100%;
+      }
+      .vtbtn:last-child {
+        border-right: none;
+      }
+      .vtbtn.active {
+        background: var(--navy);
+        color: white;
+      }
+      .vtbtn:hover:not(.active) {
+        background: white;
+        color: var(--navy);
+      }
+
+      /* List view */
+      .list-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--seam);
+        background: white;
+      }
+      .clist {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .clist thead {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+      .clist thead tr {
+        background: var(--navy);
+      }
+      .clist th {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+        color: rgba(255, 255, 255, 0.85);
+        text-transform: uppercase;
+        padding: 0.58rem 0.82rem;
+        text-align: left;
+        white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+        transition: color 0.13s;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .clist th:hover {
+        color: var(--gold-lt);
+      }
+      .clist th .sa {
+        display: inline-block;
+        margin-left: 0.22rem;
+        opacity: 0.45;
+        font-size: 0.52rem;
+      }
+      .clist th.sorted .sa {
+        opacity: 1;
+        color: var(--gold-lt);
+      }
+      .clist tbody tr {
+        border-bottom: 1px solid var(--plate);
+        transition: background 0.11s;
+        cursor: pointer;
+      }
+      .clist tbody tr:hover {
+        background: #eef3ff;
+      }
+      .clist tbody tr:hover td:first-child {
+        border-left: 3px solid var(--cobalt);
+      }
+      .clist tbody tr.miss {
+        opacity: 0.48;
+      }
+      .clist td {
+        padding: 0.48rem 0.82rem;
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: var(--ink);
+        letter-spacing: 0.02em;
+        vertical-align: middle;
+      }
+      .ltc {
+        width: 28px;
+        padding: 0.3rem 0.5rem 0.3rem 0.82rem !important;
+      }
+      .lth {
+        width: 24px;
+        height: 34px;
+        object-fit: cover;
+        border: 1px solid var(--seam);
+        display: block;
+      }
+      .lth-ph {
+        width: 24px;
+        height: 34px;
+        background: var(--plate);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.44rem;
+        color: var(--dim);
+      }
+      .lname {
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--navy);
+      }
+      .lqty {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.95rem;
+        letter-spacing: 0.04em;
+        color: var(--navy);
+        text-align: center;
+      }
+      .lqty.q0 {
+        color: var(--red) !important;
+      }
+
+      /* ===== MODAL ===== */
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 18, 35, 0.55);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        backdrop-filter: blur(3px);
+      }
+      .modal.open {
+        display: flex;
+      }
+      .modal-inner {
+        background: white;
+        border: 1px solid var(--seam);
+        max-width: 660px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 24px 60px rgba(10, 18, 35, 0.35);
+      }
+      .mhead {
+        background: var(--navy);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.72rem 1.25rem;
+        border-bottom: 3px solid var(--red);
+      }
+      .mhead-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.82rem;
+        letter-spacing: 0.2em;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .mclose {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: rgba(255, 255, 255, 0.7);
+        width: 26px;
+        height: 26px;
+        font-size: 0.88rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.13s;
+        line-height: 1;
+      }
+      .mclose:hover {
+        background: var(--red);
+        border-color: var(--red);
+        color: white;
+      }
+      .mbody {
+        padding: 1.25rem;
+      }
+      .mcard-view {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .mimg {
+        width: 172px;
+        height: 241px;
+        object-fit: cover;
+        border: 1px solid var(--seam);
+        cursor: zoom-in;
+        transition: all 0.25s;
+        flex-shrink: 0;
+      }
+      .mimg.zoomed {
+        position: fixed;
+        z-index: 200;
+        width: auto;
+        height: auto;
+        max-width: 90vw;
+        max-height: 90vh;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        cursor: zoom-out;
+        border: 2px solid var(--cobalt);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      }
+      .mimg-ph {
+        width: 172px;
+        height: 241px;
+        background: var(--plate);
+        border: 1px dashed var(--seam);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dim);
+        font-size: 0.65rem;
+        flex-shrink: 0;
+      }
+
+      .minfo {
+        flex: 1;
+        min-width: 200px;
+      }
+      .mname {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.45rem;
+        letter-spacing: 0.06em;
+        color: var(--navy);
+        line-height: 1.1;
+        margin-bottom: 0.82rem;
+      }
+      .mtable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0.72rem;
+      }
+      .mtable tr {
+        border-bottom: 1px solid var(--plate);
+      }
+      .mtable tr:last-child {
+        border-bottom: none;
+      }
+      .mtable td {
+        padding: 0.34rem 0;
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.82rem;
+        vertical-align: middle;
+      }
+      .mtable td:first-child {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.53rem;
+        letter-spacing: 0.2em;
+        color: var(--dim);
+        text-transform: uppercase;
+        width: 68px;
+        padding-right: 0.5rem;
+      }
+      .mtable td:last-child {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      /* Qty editor — navy bar */
+      .qty-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.58rem 0.82rem;
+        background: var(--navy);
+        margin-bottom: 0.62rem;
+      }
+      .qty-lbl {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.78rem;
+        letter-spacing: 0.2em;
+        color: rgba(255, 255, 255, 0.65);
+        flex: 1;
+      }
+      .qty-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: white;
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.13s;
+        line-height: 1;
+      }
+      .qty-btn:hover {
+        background: rgba(255, 255, 255, 0.24);
+      }
+      .qty-disp {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.45rem;
+        letter-spacing: 0.06em;
+        color: var(--gold-lt);
+        min-width: 2rem;
+        text-align: center;
+        line-height: 1;
+      }
+
+      .save-btn {
+        width: 100%;
+        background: var(--cobalt);
+        border: none;
+        color: white;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.92rem;
+        letter-spacing: 0.22em;
+        padding: 0.62rem;
+        cursor: pointer;
+        transition: all 0.17s;
+      }
+      .save-btn:hover {
+        background: var(--navy);
+        box-shadow: 0 4px 14px var(--shadow-h);
+      }
+      .save-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .mnav {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.72rem;
+      }
+      .mnav-btn {
+        background: var(--plate);
+        border: 1px solid var(--seam);
+        color: var(--mid);
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.76rem;
+        letter-spacing: 0.12em;
+        padding: 0.28rem 0.72rem;
+        cursor: pointer;
+        transition: all 0.13s;
+      }
+      .mnav-btn:hover {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+      }
+      .mnav-btn:disabled {
+        opacity: 0.22;
+        cursor: not-allowed;
+      }
+
+      /* ===== STATS ===== */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+      .stat-card {
+        background: white;
+        border: 1px solid var(--seam);
+        box-shadow: 0 1px 6px var(--shadow);
+        padding: 1.25rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--cobalt);
+      }
+      .stat-card.gold::before {
+        background: var(--gold);
+      }
+      .stat-card.red::before {
+        background: var(--red);
+      }
+      .stat-lbl {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.25em;
+        color: var(--dim);
+        text-transform: uppercase;
+        margin-bottom: 0.32rem;
+      }
+      .stat-val {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 3rem;
+        letter-spacing: 0.04em;
+        color: var(--navy);
+        line-height: 1;
+        margin-bottom: 0.25rem;
+      }
+      .stat-sub {
+        font-size: 0.85rem;
+        color: var(--dim);
+      }
+      .prog-wrap {
+        height: 3px;
+        background: var(--plate);
+        margin-top: 0.65rem;
+      }
+      .prog-bar {
+        height: 100%;
+        transition: width 0.7s ease;
+      }
+      .prog-bar.done {
+        background: var(--green) !important;
+      }
+
+      .bditem {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.48rem;
+      }
+      .bdkey {
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.76rem;
+        font-weight: 600;
+        color: var(--ink);
+        min-width: 75px;
+      }
+      .bdbar {
+        flex: 1;
+        height: 8px;
+        background: var(--plate);
+        position: relative;
+        overflow: hidden;
+      }
+      .bdbar-inner {
+        height: 100%;
+        transition: width 0.4s ease;
+      }
+      .bdval {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.63rem;
+        color: var(--mid);
+        min-width: 34px;
+        text-align: right;
+      }
+
+      .cog-btn {
+        height: 100%;
+        background: transparent;
+        border: none;
+        border-left: 1px solid rgba(255,255,255,0.08);
+        color: rgba(255,255,255,0.5);
+        padding: 0 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.16s;
+      }
+      .cog-btn:hover {
+        color: var(--white);
+        background: rgba(255,255,255,0.05);
+      }
+
+      /* ===== SETTINGS ===== */
+      .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+      @media (max-width: 900px) {
+        .settings-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .fgrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.62rem;
+      }
+      .fgroup {
+        display: flex;
+        flex-direction: column;
+        gap: 0.22rem;
+      }
+      .fgroup.full {
+        grid-column: 1/3;
+      }
+      .flbl {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.5rem;
+        letter-spacing: 0.22em;
+        color: var(--mid);
+        text-transform: uppercase;
+      }
+
+      .finput,
+      .fselect {
+        background: var(--plate);
+        border: 1px solid var(--seam);
+        color: var(--ink);
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        padding: 0.44rem 0.68rem;
+        outline: none;
+        transition: border-color 0.15s;
+        width: 100%;
+      }
+      .finput:focus,
+      .fselect:focus {
+        border-color: var(--cobalt);
+        background: white;
+        box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+      }
+      .finput::placeholder {
+        color: var(--dim);
+      }
+      textarea.finput {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      .abtn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.28rem;
+        background: var(--plate);
+        border: 1.5px solid var(--seam);
+        color: var(--mid);
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.76rem;
+        letter-spacing: 0.15em;
+        padding: 0.42rem 0.95rem;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .abtn:hover {
+        background: var(--navy);
+        border-color: var(--navy);
+        color: white;
+      }
+      .abtn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      .abtn.pri {
+        background: var(--cobalt);
+        border-color: var(--cobalt);
+        color: white;
+      }
+      .abtn.pri:hover {
+        background: var(--navy);
+      }
+      .abtn.dan {
+        border-color: var(--red);
+        color: var(--red);
+      }
+      .abtn.dan:hover {
+        background: var(--red);
+        color: white;
+      }
+      .abtn.full {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.62rem;
+      }
+
+      .step-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.82rem;
+      }
+      .step {
+        display: flex;
+        gap: 0.7rem;
+        align-items: flex-start;
+      }
+      .step-n {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.35rem;
+        letter-spacing: 0.04em;
+        color: var(--cobalt);
+        opacity: 0.32;
+        line-height: 1.3;
+        flex-shrink: 0;
+        min-width: 20px;
+      }
+      .step-t {
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.83rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 0.18rem;
+      }
+      .step-d {
+        font-size: 0.73rem;
+        color: var(--mid);
+        line-height: 1.6;
+      }
+      .step-d a {
+        color: var(--cobalt);
+        text-decoration: none;
+      }
+      .step-d a:hover {
+        text-decoration: underline;
+      }
+      .step-d code {
+        background: var(--plate);
+        padding: 0.08rem 0.38rem;
+        font-size: 0.66rem;
+        color: var(--navy);
+        font-family: 'Share Tech Mono', monospace;
+        border: 1px solid var(--seam);
+      }
+
+      .info-panel {
+        background: #eef3ff;
+        border-left: 3px solid var(--cobalt);
+        padding: 0.82rem 1rem;
+        margin-top: 0.82rem;
+        font-size: 0.73rem;
+        line-height: 1.7;
+        color: var(--mid);
+      }
+      .info-panel strong {
+        color: var(--navy);
+      }
+
+      /* Status */
+      .status-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.55rem;
+        letter-spacing: 0.12em;
+        color: var(--dim);
+      }
+      .sdot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        background: var(--seam);
+      }
+      .sdot.connected {
+        background: var(--green);
+        box-shadow: 0 0 5px var(--green);
+      }
+      .sdot.disconnected {
+        background: var(--red);
+      }
+      .sdot.loading {
+        background: var(--gold);
+        animation: blink 0.8s ease-in-out infinite;
+      }
+
+      /* Divider */
+      .divider {
+        height: 1px;
+        background: linear-gradient(90deg, var(--cobalt), var(--red), var(--gold), transparent);
+        margin: 1.25rem 0;
+        opacity: 0.2;
+      }
+
+      /* Toast */
+      .toast-box {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .toast {
+        background: var(--navy);
+        border-left: 3px solid var(--cobalt);
+        padding: 0.62rem 1rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: white;
+        box-shadow: 0 4px 16px rgba(10, 18, 35, 0.4);
+        animation:
+          slideIn 0.27s ease,
+          fadeOut 0.27s ease 2.7s forwards;
+        max-width: 300px;
+        letter-spacing: 0.03em;
+      }
+      .toast.success {
+        border-left-color: #3a7a50;
+      }
+      .toast.error {
+        border-left-color: var(--red);
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateX(110%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+          transform: translateX(110%);
+        }
+      }
+
+      /* Loading */
+      .loading-ov {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(240, 242, 245, 0.88);
+        z-index: 150;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      .loading-ov.active {
+        display: flex;
+      }
+      .lring {
+        position: relative;
+        width: 60px;
+        height: 60px;
+      }
+      .lring::before,
+      .lring::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        border: 3px solid transparent;
+      }
+      .lring::before {
+        inset: 0;
+        border-top-color: var(--cobalt);
+        border-right-color: var(--cobalt);
+        animation: spin 0.85s linear infinite;
+      }
+      .lring::after {
+        inset: 10px;
+        border-bottom-color: var(--red);
+        animation: spin 1.3s linear infinite reverse;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .ltxt {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 0.78rem;
+        letter-spacing: 0.35em;
+        color: var(--navy);
+      }
+
+      /* Burger */
+      .bbtn {
+        display: none;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        padding: 0.38rem 0.58rem;
+        flex-direction: column;
+        gap: 4px;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.14s;
+      }
+      .bbtn:hover {
+        border-color: rgba(255, 255, 255, 0.5);
+        color: white;
+      }
+      .bbtn span {
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: currentColor;
+        transition: all 0.2s;
+      }
+      .bbtn.open span:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+      .bbtn.open span:nth-child(2) {
+        opacity: 0;
+      }
+      .bbtn.open span:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+
+      .nav-dd {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--navy);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-top: none;
+        box-shadow: 0 8px 24px rgba(10, 18, 35, 0.4);
+        z-index: 50;
+        min-width: 170px;
+        flex-direction: column;
+      }
+      .nav-dd.open {
+        display: flex;
+      }
+      .nav-dd button {
+        border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        width: 100%;
+        text-align: left;
+        padding: 0.72rem 1.2rem !important;
+      }
+      .nav-dd button:last-child {
+        border-bottom: none !important;
+      }
+
+      /* Empty state */
+      .empty {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--dim);
+      }
+      .empty-icon {
+        font-size: 2.5rem;
+        opacity: 0.12;
+        margin-bottom: 1rem;
+      }
+      .empty h3 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1rem;
+        letter-spacing: 0.2em;
+        margin-bottom: 0.5rem;
+        color: var(--mid);
+      }
+      .empty p {
+        font-size: 0.78rem;
+        opacity: 0.7;
+      }
+
+      /* Tooltip */
+      #tt {
+        position: fixed;
+        background: var(--navy);
+        color: white;
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        font-size: 0.73rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 0.22rem 0.58rem;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.13s;
+        z-index: 9999;
+        box-shadow: 0 3px 10px rgba(10, 18, 35, 0.3);
+      }
+      #tt.vis {
+        opacity: 1;
+      }
+
+      @media (max-width: 700px) {
+        nav {
+          display: none;
+        }
+        .bbtn {
+          display: flex;
+        }
+        .home-grid {
+          grid-template-columns: 1fr;
+        }
+        main {
+          padding: 1rem;
+        }
+        .header-inner {
+          padding: 0 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <div class="logo-area">
+          <!-- RX-78-2 style head: white helmet, blue face, red V-fin, gold eyes -->
+          <img class="rx78" src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1x2DG0_Ed3FKHhwWTRR14WgOXG4Jhlki6" alt="RX-78-2 Gundam" />
+
+          <div class="logo-text">
+            <div class="logo-title">MOBILE SUIT <em>REGISTRY</em></div>
+            <div class="logo-sub">Gundam GCG · Collection Database</div>
+          </div>
+        </div>
+
+        <div class="hstats">
+          <div class="hs"><span class="hs-num" id="stat-total">—</span><span class="hs-lbl">Total Cards</span></div>
+          <div class="hs"><span class="hs-num" id="stat-owned">—</span><span class="hs-lbl">Suits Owned</span></div>
+          <div class="hs"><span class="hs-num" id="stat-missing">—</span><span class="hs-lbl">Not Acquired</span></div>
+          <div class="hs"><span class="hs-num" id="stat-pct">—</span><span class="hs-lbl">Complete</span></div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.72rem; flex-shrink: 0; position: relative">
+          <div id="offline-indicator">
+            <div class="odot"></div>
+            OFFLINE
+          </div>
+          <button class="cog-btn" onclick="openConfig()" data-tooltip="Configuration">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- HANGAR -->
+      <div class="page active" id="page-collection">
+        <div class="sec">
+          <div class="sec-sq"></div>
+          <div class="sec-text">MOBILE SUIT HANGAR</div>
+          <div class="sec-line"></div>
+          <button class="sync-btn" id="coll-sync-btn" onclick="syncFromSheet()">↻ SYNC SHEET</button>
+        </div>
+
+        <div class="coll-controls">
+          <div class="search-wrap" style="flex: 1; min-width: 180px">
+            <span class="search-icon">⌕</span>
+            <input class="search-input" id="coll-search" type="text" placeholder="Search units…" oninput="renderCollection()" />
+          </div>
+          <select class="fsel" id="coll-filter-set" onchange="renderCollection()" style="flex: 1; min-width: 110px">
+            <option value="">All Sets</option>
+          </select>
+          <select class="fsel" id="coll-filter-rarity" onchange="renderCollection()" style="flex: 1; min-width: 110px">
+            <option value="">All Rarities</option>
+          </select>
+          <select class="fsel" id="coll-filter-owned" onchange="renderCollection()" style="min-width: 100px">
+            <option value="">All Cards</option>
+            <option value="owned">Acquired</option>
+            <option value="missing">Missing</option>
+          </select>
+          <select class="fsel" id="coll-sort" onchange="renderCollection()" style="min-width: 108px">
+            <option value="set">Sort: Set</option>
+            <option value="name">Sort: Name</option>
+            <option value="rarity">Sort: Rarity</option>
+            <option value="qty-desc">Sort: Qty ↓</option>
+            <option value="qty-asc">Sort: Qty ↑</option>
+          </select>
+          <div class="vtoggle" style="height: auto; align-self: stretch">
+            <button class="vtbtn active" id="toggle-grid" onclick="setView('grid')">▦ GRID</button>
+            <button class="vtbtn" id="toggle-list" onclick="setView('list')">≡ LIST</button>
+          </div>
+          <button class="abtn" onclick="resetFilters()">↺</button>
+        </div>
+
+        <div id="rar-wrap">
+          <div class="rar-toggle" onclick="toggleRarChips()">
+            <div class="sec-sq" style="background: var(--gold); opacity: 1"></div>
+            <div class="sec-text" style="font-size: 0.72rem">RARITY FILTER</div>
+            <span id="rar-arrow" style="font-size: 0.52rem; color: var(--cobalt)">▶</span>
+            <span class="rar-badge" id="rar-badge"></span>
+            <div class="sec-line"></div>
+          </div>
+          <div class="rar-chips-box" id="rar-panel"><div id="rar-chips"></div></div>
+        </div>
+
+        <div class="coll-grid" id="collection-grid"></div>
+        <div class="list-wrap" id="collection-list-wrap" style="display: none">
+          <table class="clist">
+            <thead>
+              <tr>
+                <th class="ltc"></th>
+                <th onclick="lsort('id')">ID <span class="sa">↕</span></th>
+                <th onclick="lsort('name')">Name <span class="sa">↕</span></th>
+                <th onclick="lsort('set')">Set <span class="sa">↕</span></th>
+                <th onclick="lsort('rarity')">Rarity <span class="sa">↕</span></th>
+                <th onclick="lsort('qty')" style="text-align: center">Qty <span class="sa">↕</span></th>
+              </tr>
+            </thead>
+            <tbody id="collection-list-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- CONFIG MODAL -->
+    <div class="modal" id="config-modal">
+      <div class="modal-inner" style="max-width:640px;max-height:90vh;overflow-y:auto;">
+        <div class="mhead">
+          <div class="mhead-title">SYSTEM CONFIGURATION</div>
+          <div style="display:flex;align-items:center;gap:0.75rem;">
+            <div class="status-row">
+              <div class="sdot" id="status-dot"></div>
+              <span id="status-text" style="font-size:0.65rem;">Not connected</span>
+            </div>
+            <button class="mclose" onclick="closeConfig()">✕</button>
+          </div>
+        </div>
+        <div class="mbody" style="display:block;padding:1.25rem;">
+          <div class="sec" style="margin-bottom:1rem;">
+            <div class="sec-text" style="font-size:0.72rem;">API CREDENTIALS</div>
+            <div class="sec-line"></div>
+          </div>
+          <div class="fgrid">
+            <div class="fgroup full"><label class="flbl">Google API Key</label><input class="finput" type="password" id="cfg-apikey" placeholder="AIza…" /></div>
+            <div class="fgroup full"><label class="flbl">Spreadsheet ID</label><input class="finput" type="text" id="cfg-sheetid" placeholder="1BxiMVs0XRA5nFMd…" /></div>
+            <div class="fgroup"><label class="flbl">Sheet Name</label><input class="finput" type="text" id="cfg-sheetname" placeholder="Sheet1" /></div>
+            <div class="fgroup"><label class="flbl">Header Row</label><input class="finput" type="number" id="cfg-headerrow" value="1" min="1" /></div>
+          </div>
+          <div style="display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;">
+            <button class="abtn pri" onclick="saveConfig()">💾 SAVE</button>
+            <button class="abtn" onclick="testConnection()">◈ TEST</button>
+            <button class="abtn" id="cfg-sync-btn" onclick="syncFromSheet()">↻ SYNC</button>
+            <button class="abtn dan" onclick="clearCache()" style="margin-left:auto;">✕ CLEAR CACHE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD MODAL -->
+    <div class="modal" id="card-modal">
+      <div class="modal-inner">
+        <div class="mhead">
+          <div class="mhead-title" id="modal-title">UNIT DATA</div>
+          <button class="mclose" onclick="closeModal()">✕</button>
+        </div>
+        <div class="mbody">
+          <div class="mnav">
+            <button class="mnav-btn" id="modal-prev" onclick="navModal(-1)">◀ PREV</button>
+            <button class="mnav-btn" id="modal-next" onclick="navModal(1)">NEXT ▶</button>
+          </div>
+          <div class="mcard-view">
+            <div>
+              <img
+                class="mimg"
+                id="modal-img"
+                src=""
+                alt=""
+                onerror="
+                  this.style.display = 'none';
+                  document.getElementById('modal-img-ph').style.display = 'flex';
+                "
+              />
+              <div class="mimg-ph" id="modal-img-ph" style="display: none">NO IMAGE</div>
+            </div>
+            <div class="minfo">
+              <div class="mname" id="modal-name"></div>
+              <table class="mtable">
+                <tr>
+                  <td>ID</td>
+                  <td id="modal-id">—</td>
+                </tr>
+                <tr>
+                  <td>Set</td>
+                  <td><span class="badge badge-set" id="modal-set">—</span></td>
+                </tr>
+                <tr>
+                  <td>Rarity</td>
+                  <td><span class="badge badge-rar" id="modal-rarity">—</span></td>
+                </tr>
+                <tr id="modal-upd-row">
+                  <td>Updated</td>
+                  <td id="modal-updated" style="font-family: 'Share Tech Mono', monospace; font-size: 0.63rem; color: var(--dim)">—</td>
+                </tr>
+              </table>
+              <div class="qty-row">
+                <span class="qty-lbl">UNITS IN COLLECTION</span>
+                <button class="qty-btn" onclick="adjQty(-1)">−</button>
+                <span class="qty-disp" id="modal-qty">0</span>
+                <button class="qty-btn" onclick="adjQty(1)">+</button>
+              </div>
+              <button class="save-btn" id="modal-save-btn" onclick="saveQty()">💾 SAVE TO DATABANK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-box" id="toast-container"></div>
+    <div class="loading-ov" id="loading-overlay">
+      <div class="lring"></div>
+      <div class="ltxt" id="loading-text">INITIALISING</div>
+    </div>
+    <div id="tt"></div>
+
+    <script>
+      // CONFIG
+      let cfg = { apiKey: '', sheetId: '', sheetName: 'Sheet1', headerRow: 1, serviceKey: null, cols: null };
+      const DC = { img: 1, id: 2, name: 3, rarity: 4, set: 5, qty: 6, link: 7, upd: 8 };
+      let cards = [],
+        view = 'grid',
+        lsortKey = 'set',
+        lsortAsc = true,
+        activeRar = new Set(),
+        curIdx = null,
+        mQty = 0;
+      const RORD = ['C', 'COMMON', 'C+', 'COMMON+', 'U', 'UNCOMMON', 'U+', 'UNCOMMON+', 'R', 'RARE', 'R+', 'RARE+', 'LR', 'LIMITED RELEASE', 'LR+', 'LIMITED RELEASE+', 'LR++', 'LIMITED RELEASE++', 'P', 'PROMO'];
+
+      (function () {
+        loadCfg();
+        loadLocal();
+        updateStats();
+        if (cards.length) {
+          populateFilters();
+          renderCollection();
+          renderRecent();
+        }
+        setSt('', 'Not connected');
+      })();
+
+      // PERSIST
+      function loadCfg() {
+        try {
+          const s = localStorage.getItem('gcg_cfg');
+          if (!s) return;
+          const p = JSON.parse(s);
+          cfg = { ...cfg, ...p };
+          document.getElementById('cfg-apikey').value = cfg.apiKey || '';
+          document.getElementById('cfg-sheetid').value = cfg.sheetId || '';
+          document.getElementById('cfg-sheetname').value = cfg.sheetName || '';
+          document.getElementById('cfg-headerrow').value = cfg.headerRow || 1;
+          if (cfg.serviceKey) document.getElementById('cfg-servicekey').value = typeof cfg.serviceKey === 'string' ? cfg.serviceKey : JSON.stringify(cfg.serviceKey, null, 2);
+          if (cfg.cols) {
+            ['id', 'name', 'rarity', 'set', 'qty', 'link'].forEach((k) => {
+              const el = document.getElementById('col-' + k);
+              if (el && cfg.cols[k]) el.value = cfg.cols[k];
+            });
+          }
+        } catch (e) {}
+      }
+      function saveConfig() {
+        cfg.apiKey = document.getElementById('cfg-apikey').value.trim();
+        cfg.sheetId = document.getElementById('cfg-sheetid').value.trim();
+        cfg.sheetName = document.getElementById('cfg-sheetname').value.trim() || 'Sheet1';
+        cfg.headerRow = parseInt(document.getElementById('cfg-headerrow').value) || 1;
+        const sk = document.getElementById('cfg-servicekey') ? document.getElementById('cfg-servicekey').value.trim() : '';
+        cfg.serviceKey = sk || null;
+        localStorage.setItem('gcg_cfg', JSON.stringify(cfg));
+        toast('Configuration saved', 'success');
+        closeConfig();
+      }
+      function saveLocal() {
+        try {
+          localStorage.setItem('gcg_cards', JSON.stringify(cards));
+        } catch (e) {}
+      }
+      function loadLocal() {
+        try {
+          const s = localStorage.getItem('gcg_cards');
+          if (s) cards = JSON.parse(s);
+        } catch (e) {
+          cards = [];
+        }
+      }
+      function clearCache() {
+        if (!confirm('Clear all locally cached card data?')) return;
+        localStorage.removeItem('gcg_cards');
+        cards = [];
+        updateStats();
+        renderCollection();
+        toast('Cache cleared', 'success');
+      }
+      function setOffline(v) {
+        document.getElementById('offline-indicator').classList.toggle('visible', v);
+      }
+
+      // COLUMNS
+      function gc(k) {
+        const c = cfg.cols || DC;
+        return (c[k] || DC[k]) - 1;
+      }
+
+      // IMAGE PROXY
+      function px(url) {
+        if (!url) return '';
+        url = url.trim();
+        if (url.includes('wsrv.nl')) return url;
+        return 'https://wsrv.nl/?url=' + encodeURIComponent(url);
+      }
+      function unpx(url) {
+        if (!url) return '';
+        if (url.startsWith('https://wsrv.nl/?url=')) return decodeURIComponent(url.replace('https://wsrv.nl/?url=', ''));
+        return url;
+      }
+
+      // ROW → CARD
+      function r2c(row, ri) {
+        return { rowIndex: ri, id: row[gc('id')] || '', name: row[gc('name')] || '', rarity: row[gc('rarity')] || '', set: row[gc('set')] || '', qty: parseInt(row[gc('qty')]) || 0, img: px(row[gc('link')] || ''), upd: row[gc('upd')] || '' };
+      }
+
+      // SHEETS
+      async function fetchSheet(testOnly = false) {
+        const key = cfg.apiKey,
+          id = cfg.sheetId,
+          sh = encodeURIComponent(cfg.sheetName || 'Sheet1'),
+          hr = cfg.headerRow || 1;
+        if (!key || !id) throw new Error('API Key and Sheet ID required');
+        const resp = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${sh}?key=${key}`);
+        if (!resp.ok) {
+          const e = await resp.json();
+          throw new Error(e.error?.message || 'API Error ' + resp.status);
+        }
+        const data = await resp.json();
+        const rows = data.values || [];
+        if (testOnly) return rows;
+        return rows.slice(hr).map((row, i) => r2c(row, i + hr + 1));
+      }
+
+      async function syncFromSheet() {
+        if (!cfg.sheetId || !cfg.apiKey) {
+          toast('Configure API key and Sheet ID first', 'error');
+          openConfig();
+          return;
+        }
+        const ids = ['coll-sync-btn', 'cfg-sync-btn'];
+        const btns = ids.map((id) => document.getElementById(id)).filter(Boolean);
+        btns.forEach((b) => {
+          b.disabled = true;
+          b.textContent = '⟳ SYNCING…';
+        });
+        showLoading('DEPLOYING UNITS…');
+        try {
+          const f = await fetchSheet();
+          cards = f.filter((c) => c.name);
+          saveLocal();
+          updateStats();
+          populateFilters();
+          renderCollection();
+          renderRecent();
+          setSt('connected', 'Synced — ' + cards.length + ' cards loaded');
+          toast('Synced ' + cards.length + ' cards!', 'success');
+          setOffline(false);
+        } catch (e) {
+          toast('Sync failed: ' + e.message, 'error');
+          setSt('disconnected', 'Sync failed: ' + e.message);
+          setOffline(true);
+        }
+        hideLoading();
+        btns.forEach((b) => {
+          b.disabled = false;
+          b.textContent = '↻ SYNC';
+        });
+      }
+
+      async function testConnection() {
+        if (!document.getElementById('cfg-sheetid').value.trim()) {
+          toast('Enter a Spreadsheet ID first', 'error');
+          return;
+        }
+        cfg.apiKey = document.getElementById('cfg-apikey').value.trim();
+        cfg.sheetId = document.getElementById('cfg-sheetid').value.trim();
+        cfg.sheetName = document.getElementById('cfg-sheetname').value.trim() || 'Sheet1';
+        cfg.headerRow = parseInt(document.getElementById('cfg-headerrow').value) || 1;
+        localStorage.setItem('gcg_cfg', JSON.stringify(cfg));
+        setSt('loading', 'Testing connection…');
+        showLoading('ESTABLISHING LINK…');
+        try {
+          await fetchSheet(true);
+          setSt('connected', 'Connected!');
+          toast('Connection successful!', 'success');
+        } catch (e) {
+          setSt('disconnected', 'Failed: ' + e.message);
+          toast('Failed: ' + e.message, 'error');
+        }
+        hideLoading();
+      }
+
+      // SERVICE ACCOUNT WRITE
+      async function getToken() {
+        const kj = cfg.serviceKey;
+        if (!kj) throw new Error('Service Account key not configured.');
+        let k;
+        try {
+          k = typeof kj === 'string' ? JSON.parse(kj) : kj;
+        } catch (e) {
+          throw new Error('Invalid service account JSON');
+        }
+        const now = Math.floor(Date.now() / 1000);
+        const b4j = (s) => btoa(JSON.stringify(s)).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+        const si = b4j({ alg: 'RS256', typ: 'JWT' }) + '.' + b4j({ iss: k.client_email, scope: 'https://www.googleapis.com/auth/spreadsheets', aud: 'https://oauth2.googleapis.com/token', exp: now + 3600, iat: now });
+        const pb = k.private_key.replace(/-----[^-]+-----/g, '').replace(/\s/g, '');
+        const db = Uint8Array.from(atob(pb), (c) => c.charCodeAt(0)).buffer;
+        const ck = await crypto.subtle.importKey('pkcs8', db, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']);
+        const sig = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', ck, new TextEncoder().encode(si));
+        const b4s = btoa(String.fromCharCode(...new Uint8Array(sig)))
+          .replace(/=/g, '')
+          .replace(/\+/g, '-')
+          .replace(/\//g, '_');
+        const td = await (await fetch('https://oauth2.googleapis.com/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${si + '.' + b4s}` })).json();
+        if (!td.access_token) throw new Error(td.error_description || 'Could not get access token');
+        return td.access_token;
+      }
+
+      async function updateRow(card, stamp = false) {
+        if (!card.rowIndex) throw new Error('No row index');
+        const token = await getToken();
+        const id = cfg.sheetId,
+          sh = cfg.sheetName || 'Sheet1',
+          c = cfg.cols || DC;
+        const now = new Date().toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const data = [];
+        const qc = String.fromCharCode(64 + (c.qty || DC.qty));
+        data.push({ range: `${sh}!${qc}${card.rowIndex}`, values: [[card.qty ?? 0]] });
+        const uc = c.upd || DC.upd;
+        if (uc) {
+          const cc = String.fromCharCode(64 + uc);
+          data.push({ range: `${sh}!${cc}${card.rowIndex}`, values: [[stamp ? now : card.upd || '']] });
+        }
+        const resp = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values:batchUpdate`, { method: 'POST', headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ valueInputOption: 'USER_ENTERED', data }) });
+        if (!resp.ok) {
+          const e = await resp.json();
+          throw new Error(e.error?.message || 'Update error');
+        }
+        return resp.json();
+      }
+
+      // RANDOM CARD
+      function dsi(pool, salt) {
+        const t = new Date();
+        let h = t.getFullYear() * 10000 + (t.getMonth() + 1) * 100 + t.getDate() + salt;
+        h = ((h >>> 16) ^ h) * 0x45d9f3b;
+        h = ((h >>> 16) ^ h) * 0x45d9f3b;
+        h = (h >>> 16) ^ h;
+        return Math.abs(h) % pool.length;
+      }
+      function rk(r) {
+        const k = (r || '').trim().toUpperCase();
+        if (k === 'COMMON+') return 'CP';
+        if (k === 'COMMON') return 'C';
+        if (k === 'UNCOMMON+') return 'UP';
+        if (k === 'UNCOMMON') return 'U';
+        if (k === 'RARE+') return 'RP';
+        if (k === 'RARE') return 'R';
+        if (k === 'LIMITED RELEASE++') return 'LRPP';
+        if (k === 'LIMITED RELEASE+') return 'LRP';
+        if (k === 'LIMITED RELEASE') return 'LR';
+        if (k === 'PROMO') return 'P';
+        return k.replace(/\+\+/g, 'PP').replace(/\+/g, 'P');
+      }
+
+      // Series colour derived from card ID prefix
+      function sc(id) {
+        if (!id) return '#6a7585';
+        const u = id.toUpperCase();
+        if (u.startsWith('EXB-') || u.startsWith('EXR-') || u.startsWith('R-')) return '#c0281a';
+        if (u.startsWith('T-')) return '#c8902a';
+        if (u.startsWith('GD') || u.startsWith('ST')) return '#2a5298';
+        return '#6a7585';
+      }
+      function scLight(id) {
+        const c = sc(id);
+        if (c === '#c0281a') return 'rgba(192,40,26,0.12)';
+        if (c === '#c8902a') return 'rgba(200,144,42,0.12)';
+        if (c === '#2a5298') return 'rgba(42,82,152,0.12)';
+        return 'rgba(106,117,133,0.10)';
+      }
+
+      function showRandom(force = false) {
+        const c = document.getElementById('cotd-container');
+        if (!c) return;
+        if (!cards.length) {
+          c.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--dim);font-size:0.8rem;">Sync your collection to deploy a unit</div>`;
+          return;
+        }
+        const pool = cards.filter((x) => x.qty > 0);
+        if (!pool.length) {
+          c.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--dim);font-size:0.8rem;">No acquired units in collection</div>`;
+          return;
+        }
+        const i = force ? Math.floor(Math.random() * pool.length) : dsi(pool, 7);
+        const card = pool[i];
+        const idx = cards.indexOf(card);
+        const r = rk(card.rarity);
+        const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+        const sCol = sc(card.id);
+        const sLt = scLight(card.id);
+        c.innerHTML = `
+  <div class="cotd-sub">FIELD UNIT · ${date}</div>
+  <div class="cotd-inner">
+    <div class="cotd-img-wrap">
+      ${card.img ? `<img class="cotd-img" src="${card.img}" alt="${card.name}" onclick="openModal(${idx})" style="border-color:${sCol};" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="cotd-img-ph" style="display:none;">NO IMAGE</div>` : `<div class="cotd-img-ph">NO IMAGE</div>`}
+      ${card.rarity ? `<div class="rar-tab ${r}">${card.rarity}</div>` : ''}
+    </div>
+    <div class="cotd-info">
+      <div class="cotd-name" style="color:${sCol};">${card.name}</div>
+      ${card.id ? `<div class="mrow"><span class="mkey">ID</span><span class="mval" style="font-family:'Share Tech Mono',monospace;font-size:0.77rem;color:var(--dim);">${card.id}</span></div>` : ''}
+      <div class="mrow"><span class="mkey">Set</span><span class="badge badge-set" style="background:${sCol};">${card.set || '—'}</span></div>
+      <div class="mrow"><span class="mkey">Rarity</span><span class="badge badge-rar ${r}">${card.rarity || '—'}</span></div>
+      <div class="mrow"><span class="mkey">Owned</span><span class="mval" style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.04em;color:${card.qty > 1 ? sCol : 'var(--green)'};">${card.qty}×</span></div>
+      <button class="roll-btn" onclick="openModal(${idx})" style="background:${sCol};">▶ VIEW UNIT</button>
+      <button class="roll-btn rd" onclick="showRandom(true)">↺ RANDOMISE</button>
+    </div>
+  </div>`;
+      }
+
+      // SEARCH
+      function handleSearch(q) {
+        const sf = document.getElementById('filter-set').value,
+          rf = document.getElementById('filter-rarity').value,
+          res = document.getElementById('search-results'),
+          ph = document.getElementById('search-placeholder');
+        q = q.toLowerCase().trim();
+        if (!q && !sf && !rf) {
+          res.innerHTML = '';
+          if (ph) {
+            res.appendChild(ph);
+            ph.style.display = 'flex';
+          }
+          return;
+        }
+        if (ph) ph.style.display = 'none';
+        let f = cards.filter((c) => {
+          const mq = !q || c.name.toLowerCase().includes(q) || c.set.toLowerCase().includes(q) || (c.id || '').toLowerCase().includes(q) || (c.rarity || '').toLowerCase().includes(q);
+          return mq && (!sf || c.set === sf) && (!rf || c.rarity === rf);
+        });
+        if (!f.length) {
+          res.innerHTML = `<div class="no-res">${cards.length ? 'No units match' : 'Sync first'}</div>`;
+          return;
+        }
+        res.innerHTML = f
+          .slice(0, 30)
+          .map((c) => {
+            const idx = cards.indexOf(c),
+              qc = qcl(c),
+              sCol = sc(c.id),
+              qcol = qc === 'q0' ? 'var(--red)' : qc === 'q1' ? 'var(--green)' : 'var(--navy)';
+            return `<div class="rcard" onclick="openModal(${idx})" style="border-left:3px solid ${sCol};">${c.img ? `<img class="rthumb" src="${c.img}" alt="${c.name}" onerror="this.style.display='none'">` : `<div class="rthumb-ph">?</div>`}<div class="rinfo"><div class="rname">${c.name}</div><div class="rsub">${[c.id, c.set, c.rarity].filter(Boolean).join(' · ')}</div></div><div class="rqty" style="color:${qcol};">${c.qty}×</div></div>`;
+          })
+          .join('');
+        if (f.length > 30) res.innerHTML += `<div class="no-res" style="opacity:0.4;">${f.length - 30} more — refine search</div>`;
+      }
+
+      // FILTERS
+      function populateFilters() {
+        const sets = [...new Set(cards.map((c) => c.set).filter(Boolean))].sort();
+        const rar = [...new Set(cards.map((c) => c.rarity).filter(Boolean))].sort((a, b) => {
+          const ai = RORD.indexOf(a.toUpperCase()),
+            bi = RORD.indexOf(b.toUpperCase());
+          return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+        });
+        ['filter-set', 'coll-filter-set'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const cur = el.value;
+          el.innerHTML = '<option value="">All Sets</option>' + sets.map((s) => `<option value="${s}">${s}</option>`).join('');
+          if (cur) el.value = cur;
+        });
+        ['filter-rarity', 'coll-filter-rarity'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const cur = el.value;
+          el.innerHTML = '<option value="">All Rarities</option>' + rar.map((r) => `<option value="${r}">${r}</option>`).join('');
+          if (cur) el.value = cur;
+        });
+        populateRarChips();
+      }
+
+      function populateRarChips() {
+        const rar = [...new Set(cards.map((c) => (c.rarity || '').trim()).filter(Boolean))].sort((a, b) => {
+          const ai = RORD.indexOf(a.trim().toUpperCase()),
+            bi = RORD.indexOf(b.trim().toUpperCase());
+          return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+        });
+        const cont = document.getElementById('rar-chips');
+        if (!cont) return;
+        cont.innerHTML = rar.map((r) => `<button class="rchip ${activeRar.has(r) ? 'active' : ''}" data-rar="${r}">${r}</button>`).join('');
+        document.getElementById('rar-wrap').style.display = rar.length ? '' : 'none';
+        updRarBadge();
+      }
+      function toggleRarChips() {
+        const p = document.getElementById('rar-panel'),
+          a = document.getElementById('rar-arrow');
+        const open = p.style.display === 'flex';
+        p.style.display = open ? 'none' : 'flex';
+        a.textContent = open ? '▶' : '▼';
+      }
+      function updRarBadge() {
+        const b = document.getElementById('rar-badge');
+        if (!b) return;
+        if (activeRar.size > 0) {
+          b.textContent = activeRar.size + ' active';
+          b.style.display = 'inline';
+        } else b.style.display = 'none';
+      }
+      document.addEventListener('click', (e) => {
+        const chip = e.target.closest('.rchip');
+        if (!chip) return;
+        const r = chip.dataset.rar;
+        if (activeRar.has(r)) {
+          activeRar.delete(r);
+          chip.classList.remove('active');
+        } else {
+          activeRar.add(r);
+          chip.classList.add('active');
+        }
+        updRarBadge();
+        renderCollection();
+      });
+
+      function resetFilters() {
+        document.getElementById('coll-search').value = '';
+        document.getElementById('coll-filter-set').value = '';
+        document.getElementById('coll-filter-rarity').value = '';
+        document.getElementById('coll-filter-owned').value = '';
+        document.getElementById('coll-sort').value = 'set';
+        lsortKey = 'set';
+        lsortAsc = true;
+        document.querySelectorAll('.clist th').forEach((th) => {
+          th.classList.remove('sorted');
+          const a = th.querySelector('.sa');
+          if (a) a.textContent = '↕';
+        });
+        activeRar.clear();
+        document.querySelectorAll('.rchip.active').forEach((el) => el.classList.remove('active'));
+        updRarBadge();
+        renderCollection();
+      }
+
+      function qcl(c) {
+        if (!c.qty || c.qty < 1) return 'q0';
+        if (c.qty === 1) return 'q1';
+        return '';
+      }
+
+      // VIEW
+      function setView(v) {
+        view = v;
+        document.getElementById('collection-grid').style.display = v === 'grid' ? 'grid' : 'none';
+        document.getElementById('collection-list-wrap').style.display = v === 'list' ? 'block' : 'none';
+        document.getElementById('toggle-grid').classList.toggle('active', v === 'grid');
+        document.getElementById('toggle-list').classList.toggle('active', v === 'list');
+        renderCollection();
+      }
+
+      // RENDER
+      function rarsort(a, b) {
+        const ai = RORD.indexOf((a.rarity || '').toUpperCase()),
+          bi = RORD.indexOf((b.rarity || '').toUpperCase());
+        return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+      }
+      function msort(a, b, pk, pa) {
+        const cmp = (x, y) => (x || '').toString().localeCompare((y || '').toString(), undefined, { numeric: true });
+        if (pk === 'rarity') {
+          const r = pa ? rarsort(a, b) : rarsort(b, a);
+          if (r !== 0) return r;
+        } else if (pk && pk !== 'set') {
+          let r;
+          if (pk === 'qty') r = pa ? a.qty - b.qty : b.qty - a.qty;
+          else r = pa ? cmp(a[pk], b[pk]) : cmp(b[pk], a[pk]);
+          if (r !== 0) return r;
+        }
+        return cmp(a.set, b.set) || cmp(a.id, b.id);
+      }
+
+      function lsort(key) {
+        if (lsortKey === key) lsortAsc = !lsortAsc;
+        else {
+          lsortKey = key;
+          lsortAsc = true;
+        }
+        document.querySelectorAll('.clist th').forEach((th) => {
+          th.classList.remove('sorted');
+          const a = th.querySelector('.sa');
+          if (a) a.textContent = '↕';
+        });
+        const hm = { id: 1, name: 2, set: 3, rarity: 4, qty: 5 };
+        const ci = hm[lsortKey];
+        if (ci !== undefined) {
+          const th = document.querySelectorAll('.clist th')[ci];
+          if (th) {
+            th.classList.add('sorted');
+            const a = th.querySelector('.sa');
+            if (a) a.textContent = lsortAsc ? '↑' : '↓';
+          }
+        }
+        renderCollection();
+      }
+
+      function renderCollection() {
+        const q = (document.getElementById('coll-search')?.value || '').toLowerCase();
+        const sf = document.getElementById('coll-filter-set')?.value || '';
+        const rf = document.getElementById('coll-filter-rarity')?.value || '';
+        const of = document.getElementById('coll-filter-owned')?.value || '';
+        const sr = view === 'list' ? lsortKey : document.getElementById('coll-sort')?.value || 'set';
+        const sk = sr === 'qty-desc' || sr === 'qty-asc' ? 'qty' : sr;
+        const sa = view === 'list' ? lsortAsc : sr !== 'qty-desc';
+        if (!cards.length) {
+          const e = `<div class="empty" style="grid-column:1/-1;"><div class="empty-icon">◎</div><h3>HANGAR EMPTY</h3><p>Configure your Google Sheet in Config and sync.</p></div>`;
+          document.getElementById('collection-grid').innerHTML = e;
+          document.getElementById('collection-list-body').innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--dim);font-size:0.8rem;">No cards loaded</td></tr>`;
+          return;
+        }
+        let f = cards.filter((c) => {
+          const mq = !q || c.name.toLowerCase().includes(q) || c.set.toLowerCase().includes(q) || (c.id || '').toLowerCase().includes(q) || (c.rarity || '').toLowerCase().includes(q);
+          const ms = !sf || c.set === sf;
+          const mr = (!rf || c.rarity === rf) && (activeRar.size === 0 || activeRar.has(c.rarity));
+          const mo = !of || (of === 'owned' ? c.qty > 0 : c.qty === 0);
+          return mq && ms && mr && mo;
+        });
+        f.sort((a, b) => msort(a, b, sk, sa));
+        view === 'grid' ? renderGrid(f) : renderList(f);
+      }
+
+      function renderGrid(f) {
+        const g = document.getElementById('collection-grid');
+        if (!f.length) {
+          g.innerHTML = `<div class="empty" style="grid-column:1/-1;"><div class="empty-icon">◎</div><h3>NO MATCHES</h3><p>No units match your current filters.</p></div>`;
+          return;
+        }
+        g.innerHTML = f
+          .map((c) => {
+            const idx = cards.indexOf(c),
+              grey = c.qty === 0 ? 'grey' : '',
+              unowned = c.qty === 0 ? 'unowned' : '',
+              qc = qcl(c),
+              r = rk(c.rarity),
+              sCol = sc(c.id),
+              sLt = scLight(c.id);
+            return `<div class="ctile ${unowned}" onclick="openModal(${idx})" style="--sc:${sCol};--sc-lt:${sLt};border-color:${sCol}30;"><div class="cbar" style="background:${sCol};"></div><div class="ctile-img-wrap">${c.img ? `<img class="ctile-img ${grey}" src="${c.img}" alt="${c.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="ctile-img-ph" style="display:none;">${c.name}</div>` : `<div class="ctile-img-ph">${c.name}</div>`}</div><div class="ctile-info"><div class="ctile-name" data-tooltip="${c.name}">${c.name}</div><div class="ctile-meta"><span class="ctile-set" data-tooltip="${c.set}">${c.rarity ? `[${c.rarity}] ` : ''}${c.set}</span><span class="ctile-qty ${qc}">${c.qty}×</span></div></div></div>`;
+          })
+          .join('');
+      }
+
+      function renderList(f) {
+        const tb = document.getElementById('collection-list-body');
+        if (!f.length) {
+          tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--dim);font-size:0.8rem;">No units match</td></tr>`;
+          return;
+        }
+        tb.innerHTML = f
+          .map((c) => {
+            const idx = cards.indexOf(c),
+              miss = !c.qty || c.qty < 1,
+              r = rk(c.rarity),
+              sCol = sc(c.id);
+            return `<tr class="${miss ? 'miss' : ''}" onclick="openModal(${idx})" style="border-left:3px solid ${sCol};"><td class="ltc">${c.img ? `<img class="lth ${miss ? 'grey' : ''}" src="${c.img}" alt="${c.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="lth-ph" style="display:none;">?</div>` : `<div class="lth-ph">?</div>`}</td><td style="font-family:'Share Tech Mono',monospace;font-size:0.63rem;color:var(--dim);">${c.id || '—'}</td><td class="lname">${c.name}</td><td style="font-size:0.77rem;">${c.set || '—'}</td><td><span class="badge badge-rar ${r}" style="font-size:0.56rem;">${c.rarity || '—'}</span></td><td class="lqty ${miss ? 'q0' : qcl(c)}">${c.qty}</td></tr>`;
+          })
+          .join('');
+      }
+
+      // MODAL
+      function openModal(idx) {
+        curIdx = idx;
+        const card = cards[idx];
+        if (!card) return;
+        mQty = card.qty;
+        const r = rk(card.rarity);
+        const sCol = sc(card.id);
+        const sLt = scLight(card.id);
+        // Apply series colour to modal
+        const mw = document.getElementById('card-modal');
+        const mn = mw.querySelector('.modal-inner');
+        mn.style.borderTop = `4px solid ${sCol}`;
+        mn.style.setProperty('--sc', sCol);
+        mn.style.setProperty('--sc-lt', sLt);
+        mw.querySelector('.mhead').style.background = sLt;
+        mw.querySelector('.mhead').style.borderBottom = `1px solid ${sCol}30`;
+        mw.querySelector('.save-btn').style.background = sCol;
+        mw.querySelectorAll('.mnav-btn').forEach(b => { b.style.borderColor = sCol; b.style.color = sCol; });
+        document.getElementById('modal-title').textContent = (card.id ? card.id + ' · ' : '') + card.name.toUpperCase();
+        document.getElementById('modal-name').textContent = card.name;
+        document.getElementById('modal-id').textContent = card.id || '—';
+        document.getElementById('modal-set').textContent = card.set || '—';
+        const mr = document.getElementById('modal-rarity');
+        mr.textContent = card.rarity || '—';
+        mr.className = 'badge badge-rar ' + r;
+        document.getElementById('modal-qty').textContent = mQty;
+        const ur = document.getElementById('modal-upd-row'),
+          ue = document.getElementById('modal-updated');
+        if (card.upd) {
+          ue.textContent = card.upd;
+          ur.style.display = '';
+        } else ur.style.display = 'none';
+        const mi = document.getElementById('modal-img'),
+          mp = document.getElementById('modal-img-ph');
+        if (card.img) {
+          mi.src = card.img;
+          mi.style.display = 'block';
+          mp.style.display = 'none';
+        } else {
+          mi.style.display = 'none';
+          mp.style.display = 'flex';
+        }
+        document.getElementById('modal-prev').disabled = idx <= 0;
+        document.getElementById('modal-next').disabled = idx >= cards.length - 1;
+        document.getElementById('card-modal').classList.add('open');
+      }
+      function closeModal() {
+        document.getElementById('card-modal').classList.remove('open');
+        document.querySelectorAll('.mimg.zoomed').forEach((el) => el.classList.remove('zoomed'));
+        curIdx = null;
+      }
+      function navModal(d) {
+        if (curIdx === null) return;
+        const ni = curIdx + d;
+        if (ni < 0 || ni >= cards.length) return;
+        openModal(ni);
+      }
+      document.getElementById('card-modal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('card-modal')) closeModal();
+      });
+      function adjQty(d) {
+        mQty = Math.max(0, mQty + d);
+        document.getElementById('modal-qty').textContent = mQty;
+      }
+      async function saveQty() {
+        if (curIdx === null) return;
+        const orig = cards[curIdx].qty,
+          card = { ...cards[curIdx], qty: mQty };
+        const btn = document.getElementById('modal-save-btn');
+        btn.disabled = true;
+        btn.textContent = '⟳ SAVING…';
+        try {
+          await updateRow(card, orig !== mQty);
+          if (orig !== mQty) card.upd = new Date().toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          cards[curIdx] = card;
+          saveLocal();
+          updateStats();
+          renderCollection();
+          renderRecent();
+          toast('Saved to databank!', 'success');
+          closeModal();
+        } catch (e) {
+          cards[curIdx] = card;
+          saveLocal();
+          updateStats();
+          renderCollection();
+          renderRecent();
+          toast('Saved locally (' + e.message + ')', 'error');
+          closeModal();
+        }
+        btn.disabled = false;
+        btn.textContent = '💾 SAVE TO DATABANK';
+      }
+
+      // STATS
+      function updateStats() {
+        const total = cards.length;
+        const acq = cards.filter((c) => c.qty > 0).length;
+        const pct = total ? Math.round((acq / total) * 100) : 0;
+        document.getElementById('stat-total').textContent = total;
+        document.getElementById('stat-owned').textContent = cards.reduce((s, c) => s + (c.qty || 0), 0);
+        document.getElementById('stat-missing').textContent = cards.filter((c) => !c.qty || c.qty < 1).length;
+        document.getElementById('stat-pct').textContent = total ? pct + '%' : '—';
+      }
+
+      function barCol(r) {
+        const k = r.trim().toUpperCase();
+        if (k === 'C' || k === 'COMMON') return '#c8cdd6';
+        if (k === 'C+' || k === 'COMMON+') return '#b0b8c8';
+        if (k === 'U' || k === 'UNCOMMON') return '#3a7a50';
+        if (k === 'U+' || k === 'UNCOMMON+') return '#2e9e60';
+        if (k === 'R' || k === 'RARE') return '#2a5298';
+        if (k === 'R+' || k === 'RARE+') return '#1a6fd4';
+        if (k === 'LR' || k === 'LIMITED RELEASE') return '#6b3fb0';
+        if (k === 'LR+' || k === 'LIMITED RELEASE+') return '#7a38c0';
+        if (k === 'LR++' || k === 'LIMITED RELEASE++') return '#9b2dd4';
+        if (k === 'P' || k === 'PROMO') return '#c0281a';
+        return '#4a5568';
+      }
+
+      function renderStats() {
+        const cont = document.getElementById('stats-content');
+        if (!cards.length) {
+          cont.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--dim);font-size:0.8rem;">Sync your collection to generate the intelligence report</div>`;
+          return;
+        }
+        const total = cards.length,
+          acq = cards.filter((c) => c.qty > 0).length,
+          units = cards.reduce((s, c) => s + (c.qty || 0), 0),
+          miss = total - acq,
+          pct = total ? Math.round((acq / total) * 100) : 0;
+        const byr = {}, bys = {};
+        cards.forEach((c) => {
+          const r = c.rarity || 'Unknown';
+          if (!byr[r]) byr[r] = { t: 0, o: 0 };
+          byr[r].t++;
+          if (c.qty > 0) byr[r].o++;
+          const s = c.set || 'Unknown';
+          if (!bys[s]) bys[s] = { t: 0, o: 0 };
+          bys[s].t++;
+          if (c.qty > 0) bys[s].o++;
+        });
+
+        // PIE CHART
+        const rarEntries = Object.entries(byr).sort(([a], [b]) => {
+          const ai = RORD.indexOf(a.toUpperCase()), bi = RORD.indexOf(b.toUpperCase());
+          return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+        });
+        const pieTotal = rarEntries.reduce((s, [, d]) => s + d.t, 0);
+        let startAngle = -Math.PI / 2;
+        const cx = 120, cy = 120, r = 108, ir = 64;
+        const slices = rarEntries.map(([rar, d]) => {
+          const angle = (d.t / pieTotal) * 2 * Math.PI;
+          const endAngle = startAngle + angle;
+          const x1 = cx + r * Math.cos(startAngle), y1 = cy + r * Math.sin(startAngle);
+          const x2 = cx + r * Math.cos(endAngle),   y2 = cy + r * Math.sin(endAngle);
+          const ix1 = cx + ir * Math.cos(startAngle), iy1 = cy + ir * Math.sin(startAngle);
+          const ix2 = cx + ir * Math.cos(endAngle),   iy2 = cy + ir * Math.sin(endAngle);
+          const large = angle > Math.PI ? 1 : 0;
+          const path = `M ${ix1} ${iy1} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} L ${ix2} ${iy2} A ${ir} ${ir} 0 ${large} 0 ${ix1} ${iy1} Z`;
+          startAngle = endAngle;
+          return { rar, d, path, color: barCol(rar) };
+        });
+        const pieSlices = slices.map(s => `<path d="${s.path}" fill="${s.color}" stroke="white" stroke-width="2" opacity="0.93"/>`).join('');
+        const pieLegend = slices.map(s => {
+          const pct2 = Math.round((s.d.t / pieTotal) * 100);
+          return `<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.45rem;">
+            <div style="width:12px;height:12px;flex-shrink:0;background:${s.color};"></div>
+            <span style="font-family:'Barlow Semi Condensed',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:${s.color};color:white;padding:1px 6px;">${s.rar}</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);margin-left:auto;">${s.d.o}/${s.d.t} &nbsp;${pct2}%</span>
+          </div>`;
+        }).join('');
+
+        // SET BARS — each bar relative to its own total
+        const sr = Object.entries(bys)
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([s, d]) => {
+            const ow = Math.round((d.o / d.t) * 100);
+            const complete = d.o === d.t;
+            const barBg = complete ? '#2e7d4f' : 'linear-gradient(90deg, #c0281a, #2a5298)';
+            const labelColor = complete ? '#2e7d4f' : 'var(--ink)';
+            return `<div class="bditem">
+              <div class="bdkey" style="min-width:130px;font-size:0.73rem;color:${labelColor};">${s}</div>
+              <div class="bdbar">
+                <div class="bdbar-inner" style="width:${ow}%;background:${barBg};"></div>
+              </div>
+              <div class="bdval" style="color:${labelColor};">${d.o}/${d.t}</div>
+            </div>`;
+          }).join('');
+
+        cont.innerHTML = `
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-lbl">Collection Completeness</div><div class="stat-val">${pct}%</div><div class="stat-sub">${acq} of ${total} cards acquired</div><div class="prog-wrap"><div class="prog-bar${pct === 100 ? ' done' : ''}" style="width:${pct}%;background:linear-gradient(90deg, #c0281a, #2a5298);"></div></div></div>
+            <div class="stat-card gold"><div class="stat-lbl">Total Cards in Sheet</div><div class="stat-val">${total}</div><div class="stat-sub">${miss} still to acquire</div></div>
+            <div class="stat-card red"><div class="stat-lbl">Total Suits Owned</div><div class="stat-val">${units}</div><div class="stat-sub">Across ${acq} unique cards</div></div>
+          </div>
+          <div class="divider"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+            <div class="panel b">
+              <div class="panel-body">
+                <div class="sec" style="margin-bottom:1rem;"><div class="sec-text" style="font-size:0.7rem;">BY RARITY</div><div class="sec-line"></div></div>
+                ${rarEntries.length ? `
+                <div style="display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;">
+                  <svg width="240" height="240" viewBox="0 0 240 240" style="flex-shrink:0;">
+                    ${pieSlices}
+                    <circle cx="${cx}" cy="${cy}" r="${ir}" fill="white"/>
+                    <text x="${cx}" y="${cy - 8}" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="26" fill="var(--navy)">${pct}%</text>
+                    <text x="${cx}" y="${cy + 12}" text-anchor="middle" font-family="Share Tech Mono,monospace" font-size="8" fill="var(--dim)" letter-spacing="1">OWNED</text>
+                  </svg>
+                  <div style="flex:1;min-width:100px;">${pieLegend}</div>
+                </div>` : '<div style="color:var(--dim);font-size:0.8rem;">No rarity data</div>'}
+              </div>
+            </div>
+            <div class="panel g">
+              <div class="panel-body">
+                <div class="sec" style="margin-bottom:1rem;"><div class="sec-text" style="font-size:0.7rem;">BY SET</div><div class="sec-line"></div></div>
+                ${sr || '<div style="color:var(--dim);font-size:0.8rem;">No set data</div>'}
+              </div>
+            </div>
+          </div>`;
+      }
+
+      // RECENTLY UPDATED
+      function renderRecent() {
+        const cont = document.getElementById('recent-container');
+        if (!cont) return;
+        const w = cards
+          .filter((c) => c.upd)
+          .sort((a, b) => {
+            const p = (s) => {
+              if (!s) return 0;
+              const [dp, tp] = s.split(', ');
+              if (!dp) return 0;
+              const [d, m, y] = dp.split('/');
+              return new Date(`${y}-${m}-${d}T${tp || '00:00:00'}`).getTime();
+            };
+            return p(b.upd) - p(a.upd);
+          })
+          .slice(0, 8);
+        if (!w.length) {
+          cont.innerHTML = `<div style="text-align:center;padding:1.2rem;color:var(--dim);font-size:0.8rem;">No updates yet — save a card quantity to start tracking</div>`;
+          return;
+        }
+        cont.innerHTML = `<div class="list-wrap" style="border:none;"><table class="clist"><thead><tr><th class="ltc"></th><th>ID</th><th>Name</th><th>Set</th><th>Rarity</th><th style="text-align:center;">Qty</th><th style="text-align:right;">Updated</th></tr></thead><tbody>${w
+          .map((c) => {
+            const idx = cards.indexOf(c),
+              miss = !c.qty || c.qty < 1,
+              r = rk(c.rarity),
+              sCol = sc(c.id);
+            return `<tr onclick="openModal(${idx})" class="${miss ? 'miss' : ''}" style="border-left:3px solid ${sCol};"><td class="ltc">${c.img ? `<img class="lth ${miss ? 'grey' : ''}" src="${c.img}" alt="${c.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="lth-ph" style="display:none;">?</div>` : `<div class="lth-ph">?</div>`}</td><td style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);">${c.id || '—'}</td><td class="lname">${c.name}</td><td style="font-size:0.75rem;">${c.set || '—'}</td><td><span class="badge badge-rar ${r}" style="font-size:0.53rem;">${c.rarity || '—'}</span></td><td class="lqty ${miss ? 'q0' : qcl(c)}">${c.qty}</td><td style="text-align:right;white-space:nowrap;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);padding-right:0.82rem;">${c.upd}</td></tr>`;
+          })
+          .join('')}</tbody></table></div>`;
+      }
+
+      // CONFIG MODAL
+      function openConfig() {
+        document.getElementById('config-modal').classList.add('open');
+      }
+      function closeConfig() {
+        document.getElementById('config-modal').classList.remove('open');
+      }
+      document.getElementById('config-modal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('config-modal')) closeConfig();
+      });
+
+      // NAV
+      function showPage(name) {
+        document.querySelectorAll('.page').forEach((p) => p.classList.remove('active'));
+        document.querySelectorAll('nav button,.nav-dd button').forEach((b) => b.classList.remove('active'));
+        document.getElementById('page-' + name).classList.add('active');
+        const d = document.getElementById('nav-' + name),
+          m = document.getElementById('nav-' + name + '-m');
+        if (d) d.classList.add('active');
+        if (m) m.classList.add('active');
+        if (name === 'collection') renderCollection();
+      }
+
+      // BURGER
+      function toggleBurger() {
+        document.getElementById('burger-btn').classList.toggle('open');
+        document.getElementById('nav-dropdown').classList.toggle('open');
+      }
+      function closeBurger() {
+        document.getElementById('burger-btn').classList.remove('open');
+        document.getElementById('nav-dropdown').classList.remove('open');
+      }
+      document.addEventListener('click', (e) => {
+        const bg = document.getElementById('burger-btn'),
+          dd = document.getElementById('nav-dropdown');
+        if (bg && dd && !bg.contains(e.target) && !dd.contains(e.target)) closeBurger();
+      });
+
+      // STATUS / TOAST / LOADING
+      function setSt(s, t) {
+        const d = document.getElementById('status-dot'),
+          x = document.getElementById('status-text');
+        if (s) d.className = 'sdot ' + s;
+        x.textContent = t;
+      }
+      function toast(msg, type = 'info') {
+        const c = document.getElementById('toast-container'),
+          t = document.createElement('div');
+        t.className = 'toast ' + type;
+        t.textContent = msg;
+        c.appendChild(t);
+        setTimeout(() => t.remove(), 3100);
+      }
+      function showLoading(t = 'LOADING') {
+        document.getElementById('loading-text').textContent = t;
+        document.getElementById('loading-overlay').classList.add('active');
+      }
+      function hideLoading() {
+        document.getElementById('loading-overlay').classList.remove('active');
+      }
+
+      // ZOOM
+      document.addEventListener('click', (e) => {
+        const img = e.target.closest('.mimg');
+        if (!img) {
+          if (e.target.closest('.modal')) document.querySelectorAll('.mimg.zoomed').forEach((el) => el.classList.remove('zoomed'));
+          return;
+        }
+        e.stopPropagation();
+        img.classList.toggle('zoomed');
+      });
+
+      // KEYBOARD
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+        if (document.getElementById('card-modal').classList.contains('open')) {
+          if (e.key === 'ArrowLeft') navModal(-1);
+          if (e.key === 'ArrowRight') navModal(1);
+        }
+      });
+
+      // TOOLTIP
+      const tt = document.getElementById('tt');
+      let ttt = null,
+        lte = null;
+      document.addEventListener('mousemove', (e) => {
+        const el = e.target.closest('[data-tooltip]');
+        if (tt.classList.contains('vis')) {
+          tt.style.left = e.clientX + 12 + 'px';
+          tt.style.top = e.clientY - 36 + 'px';
+          const r = tt.getBoundingClientRect();
+          if (r.right > window.innerWidth - 8) tt.style.left = e.clientX - r.width - 12 + 'px';
+          if (r.top < 8) tt.style.top = e.clientY + 16 + 'px';
+        }
+        if (el === lte) return;
+        clearTimeout(ttt);
+        tt.classList.remove('vis');
+        lte = el;
+        if (!el) return;
+        ttt = setTimeout(() => {
+          tt.textContent = el.dataset.tooltip;
+          tt.style.left = e.clientX + 12 + 'px';
+          tt.style.top = e.clientY - 36 + 'px';
+          tt.classList.add('vis');
+        }, 600);
+      });
+    </script>
+  </body>
+</html>
