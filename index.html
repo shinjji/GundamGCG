@@ -1162,20 +1162,25 @@
         justify-content: space-between;
         padding: 0.72rem 1.25rem;
         border-bottom: 3px solid var(--red);
+        gap: 0.75rem;
       }
       .mhead-title {
         font-family: 'Bebas Neue', sans-serif;
         font-size: 0.82rem;
         letter-spacing: 0.2em;
         color: rgba(255, 255, 255, 0.9);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0;
       }
       .mclose {
         background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: rgba(255, 255, 255, 0.7);
-        width: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        color: rgba(255, 255, 255, 0.8);
         height: 26px;
-        font-size: 0.88rem;
+        padding: 0 0.55rem;
+        font-size: 0.78rem;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -1198,8 +1203,8 @@
       }
 
       .mimg {
-        width: 172px;
-        height: 241px;
+        width: 210px;
+        height: 294px;
         object-fit: cover;
         border: 1px solid var(--seam);
         cursor: zoom-in;
@@ -1346,20 +1351,23 @@
         margin-bottom: 0.72rem;
       }
       .mnav-btn {
-        background: var(--plate);
-        border: 1px solid var(--seam);
-        color: var(--mid);
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.35);
+        color: rgba(255,255,255,0.8);
         font-family: 'Bebas Neue', sans-serif;
-        font-size: 0.76rem;
+        font-size: 0.72rem;
         letter-spacing: 0.12em;
-        padding: 0.28rem 0.72rem;
+        height: 26px;
+        padding: 0 0.65rem;
         cursor: pointer;
         transition: all 0.13s;
+        display: flex;
+        align-items: center;
       }
       .mnav-btn:hover {
-        background: var(--navy);
+        background: rgba(255,255,255,0.15);
         color: white;
-        border-color: var(--navy);
+        border-color: rgba(255,255,255,0.6);
       }
       .mnav-btn:disabled {
         opacity: 0.22;
@@ -1900,6 +1908,38 @@
         }
         .header-inner {
           padding: 0 1rem;
+          height: auto;
+          flex-wrap: wrap;
+          padding-top: 0;
+          padding-bottom: 0;
+          gap: 0;
+        }
+        .logo-area {
+          padding-top: 0.4rem;
+          padding-bottom: 0.4rem;
+        }
+        .hstats {
+          display: flex;
+          order: 3;
+          width: 100%;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          margin: 0 -1rem 0;
+          padding: 0;
+        }
+        .hs {
+          flex: 1;
+          padding: 0.45rem 0.5rem;
+          border-right: 1px solid rgba(255,255,255,0.1);
+          border-left: none !important;
+        }
+        .hs:first-child {
+          border-left: none !important;
+        }
+        .hs-num {
+          font-size: 1rem;
+        }
+        .hs-lbl {
+          font-size: 0.4rem;
         }
       }
     </style>
@@ -1946,6 +1986,7 @@
           <div class="sec-sq"></div>
           <div class="sec-text">MOBILE SUIT HANGAR</div>
           <div class="sec-line"></div>
+          <span id="coll-count" style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.18em;color:var(--dim);white-space:nowrap;"></span>
           <button class="sync-btn" id="coll-sync-btn" onclick="syncFromSheet()">↻ SYNC SHEET</button>
         </div>
 
@@ -2048,13 +2089,13 @@
       <div class="modal-inner">
         <div class="mhead">
           <div class="mhead-title" id="modal-title">UNIT DATA</div>
-          <button class="mclose" onclick="closeModal()">✕</button>
-        </div>
-        <div class="mbody">
-          <div class="mnav">
+          <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
             <button class="mnav-btn" id="modal-prev" onclick="navModal(-1)">◀ PREV</button>
             <button class="mnav-btn" id="modal-next" onclick="navModal(1)">NEXT ▶</button>
+            <button class="mclose" onclick="closeModal()">✕</button>
           </div>
+        </div>
+        <div class="mbody">
           <div class="mcard-view">
             <div>
               <img
@@ -2084,18 +2125,11 @@
                   <td>Rarity</td>
                   <td><span class="badge badge-rar" id="modal-rarity">—</span></td>
                 </tr>
-                <tr id="modal-upd-row">
-                  <td>Updated</td>
-                  <td id="modal-updated" style="font-family: 'Share Tech Mono', monospace; font-size: 0.63rem; color: var(--dim)">—</td>
+                <tr>
+                  <td>Qty</td>
+                  <td id="modal-qty" style="font-weight:600;">—</td>
                 </tr>
               </table>
-              <div class="qty-row">
-                <span class="qty-lbl">UNITS IN COLLECTION</span>
-                <button class="qty-btn" onclick="adjQty(-1)">−</button>
-                <span class="qty-disp" id="modal-qty">0</span>
-                <button class="qty-btn" onclick="adjQty(1)">+</button>
-              </div>
-              <button class="save-btn" id="modal-save-btn" onclick="saveQty()">💾 SAVE TO DATABANK</button>
             </div>
           </div>
         </div>
@@ -2112,14 +2146,13 @@
     <script>
       // CONFIG
       let cfg = { apiKey: '', sheetId: '', sheetName: 'Sheet1', headerRow: 1, serviceKey: null, cols: null };
-      const DC = { img: 1, id: 2, name: 3, rarity: 4, set: 5, qty: 6, link: 7, upd: 8 };
+      const DC = { id: 1, name: 2, rarity: 3, set: 4, qty: 5, link: 6 };
       let cards = [],
         view = 'grid',
         lsortKey = 'set',
         lsortAsc = true,
         activeRar = new Set(),
-        curIdx = null,
-        mQty = 0;
+        curIdx = null;
       const RORD = ['C', 'COMMON', 'C+', 'COMMON+', 'U', 'UNCOMMON', 'U+', 'UNCOMMON+', 'R', 'RARE', 'R+', 'RARE+', 'LR', 'LIMITED RELEASE', 'LR+', 'LIMITED RELEASE+', 'LR++', 'LIMITED RELEASE++', 'P', 'PROMO'];
 
       (function () {
@@ -2129,7 +2162,6 @@
         if (cards.length) {
           populateFilters();
           renderCollection();
-          renderRecent();
         }
         setSt('', 'Not connected');
       })();
@@ -2145,13 +2177,6 @@
           document.getElementById('cfg-sheetid').value = cfg.sheetId || '';
           document.getElementById('cfg-sheetname').value = cfg.sheetName || '';
           document.getElementById('cfg-headerrow').value = cfg.headerRow || 1;
-          if (cfg.serviceKey) document.getElementById('cfg-servicekey').value = typeof cfg.serviceKey === 'string' ? cfg.serviceKey : JSON.stringify(cfg.serviceKey, null, 2);
-          if (cfg.cols) {
-            ['id', 'name', 'rarity', 'set', 'qty', 'link'].forEach((k) => {
-              const el = document.getElementById('col-' + k);
-              if (el && cfg.cols[k]) el.value = cfg.cols[k];
-            });
-          }
         } catch (e) {}
       }
       function saveConfig() {
@@ -2211,7 +2236,7 @@
 
       // ROW → CARD
       function r2c(row, ri) {
-        return { rowIndex: ri, id: row[gc('id')] || '', name: row[gc('name')] || '', rarity: row[gc('rarity')] || '', set: row[gc('set')] || '', qty: parseInt(row[gc('qty')]) || 0, img: px(row[gc('link')] || ''), upd: row[gc('upd')] || '' };
+        return { rowIndex: ri, id: row[gc('id')] || '', name: row[gc('name')] || '', rarity: row[gc('rarity')] || '', set: row[gc('set')] || '', qty: parseInt(row[gc('qty')]) || 0, img: px(row[gc('link')] || '') };
       }
 
       // SHEETS
@@ -2252,7 +2277,6 @@
           updateStats();
           populateFilters();
           renderCollection();
-          renderRecent();
           setSt('connected', 'Synced — ' + cards.length + ' cards loaded');
           toast('Synced ' + cards.length + ' cards!', 'success');
           setOffline(false);
@@ -2317,21 +2341,15 @@
         return td.access_token;
       }
 
-      async function updateRow(card, stamp = false) {
+      async function updateRow(card) {
         if (!card.rowIndex) throw new Error('No row index');
         const token = await getToken();
         const id = cfg.sheetId,
           sh = cfg.sheetName || 'Sheet1',
           c = cfg.cols || DC;
-        const now = new Date().toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
         const data = [];
         const qc = String.fromCharCode(64 + (c.qty || DC.qty));
         data.push({ range: `${sh}!${qc}${card.rowIndex}`, values: [[card.qty ?? 0]] });
-        const uc = c.upd || DC.upd;
-        if (uc) {
-          const cc = String.fromCharCode(64 + uc);
-          data.push({ range: `${sh}!${cc}${card.rowIndex}`, values: [[stamp ? now : card.upd || '']] });
-        }
         const resp = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values:batchUpdate`, { method: 'POST', headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ valueInputOption: 'USER_ENTERED', data }) });
         if (!resp.ok) {
           const e = await resp.json();
@@ -2375,10 +2393,10 @@
       }
       function scLight(id) {
         const c = sc(id);
-        if (c === '#c0281a') return 'rgba(192,40,26,0.12)';
-        if (c === '#c8902a') return 'rgba(200,144,42,0.12)';
-        if (c === '#2a5298') return 'rgba(42,82,152,0.12)';
-        return 'rgba(106,117,133,0.10)';
+        if (c === '#c0281a') return 'rgba(192,40,26,0.35)';
+        if (c === '#c8902a') return 'rgba(200,144,42,0.35)';
+        if (c === '#2a5298') return 'rgba(42,82,152,0.35)';
+        return 'rgba(106,117,133,0.30)';
       }
 
       function showRandom(force = false) {
@@ -2624,6 +2642,8 @@
           return mq && ms && mr && mo;
         });
         f.sort((a, b) => msort(a, b, sk, sa));
+        const countEl = document.getElementById('coll-count');
+        if (countEl) countEl.textContent = cards.length ? `${f.length} card${f.length !== 1 ? 's' : ''} found` : '';
         view === 'grid' ? renderGrid(f) : renderList(f);
       }
 
@@ -2669,7 +2689,6 @@
         curIdx = idx;
         const card = cards[idx];
         if (!card) return;
-        mQty = card.qty;
         const r = rk(card.rarity);
         const sCol = sc(card.id);
         const sLt = scLight(card.id);
@@ -2681,7 +2700,6 @@
         mn.style.setProperty('--sc-lt', sLt);
         mw.querySelector('.mhead').style.background = sLt;
         mw.querySelector('.mhead').style.borderBottom = `1px solid ${sCol}30`;
-        mw.querySelector('.save-btn').style.background = sCol;
         mw.querySelectorAll('.mnav-btn').forEach(b => { b.style.borderColor = sCol; b.style.color = sCol; });
         document.getElementById('modal-title').textContent = (card.id ? card.id + ' · ' : '') + card.name.toUpperCase();
         document.getElementById('modal-name').textContent = card.name;
@@ -2690,13 +2708,7 @@
         const mr = document.getElementById('modal-rarity');
         mr.textContent = card.rarity || '—';
         mr.className = 'badge badge-rar ' + r;
-        document.getElementById('modal-qty').textContent = mQty;
-        const ur = document.getElementById('modal-upd-row'),
-          ue = document.getElementById('modal-updated');
-        if (card.upd) {
-          ue.textContent = card.upd;
-          ur.style.display = '';
-        } else ur.style.display = 'none';
+        document.getElementById('modal-qty').textContent = card.qty ?? 0;
         const mi = document.getElementById('modal-img'),
           mp = document.getElementById('modal-img-ph');
         if (card.img) {
@@ -2725,40 +2737,6 @@
       document.getElementById('card-modal').addEventListener('click', (e) => {
         if (e.target === document.getElementById('card-modal')) closeModal();
       });
-      function adjQty(d) {
-        mQty = Math.max(0, mQty + d);
-        document.getElementById('modal-qty').textContent = mQty;
-      }
-      async function saveQty() {
-        if (curIdx === null) return;
-        const orig = cards[curIdx].qty,
-          card = { ...cards[curIdx], qty: mQty };
-        const btn = document.getElementById('modal-save-btn');
-        btn.disabled = true;
-        btn.textContent = '⟳ SAVING…';
-        try {
-          await updateRow(card, orig !== mQty);
-          if (orig !== mQty) card.upd = new Date().toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-          cards[curIdx] = card;
-          saveLocal();
-          updateStats();
-          renderCollection();
-          renderRecent();
-          toast('Saved to databank!', 'success');
-          closeModal();
-        } catch (e) {
-          cards[curIdx] = card;
-          saveLocal();
-          updateStats();
-          renderCollection();
-          renderRecent();
-          toast('Saved locally (' + e.message + ')', 'error');
-          closeModal();
-        }
-        btn.disabled = false;
-        btn.textContent = '💾 SAVE TO DATABANK';
-      }
-
       // STATS
       function updateStats() {
         const total = cards.length;
@@ -2885,38 +2863,6 @@
               </div>
             </div>
           </div>`;
-      }
-
-      // RECENTLY UPDATED
-      function renderRecent() {
-        const cont = document.getElementById('recent-container');
-        if (!cont) return;
-        const w = cards
-          .filter((c) => c.upd)
-          .sort((a, b) => {
-            const p = (s) => {
-              if (!s) return 0;
-              const [dp, tp] = s.split(', ');
-              if (!dp) return 0;
-              const [d, m, y] = dp.split('/');
-              return new Date(`${y}-${m}-${d}T${tp || '00:00:00'}`).getTime();
-            };
-            return p(b.upd) - p(a.upd);
-          })
-          .slice(0, 8);
-        if (!w.length) {
-          cont.innerHTML = `<div style="text-align:center;padding:1.2rem;color:var(--dim);font-size:0.8rem;">No updates yet — save a card quantity to start tracking</div>`;
-          return;
-        }
-        cont.innerHTML = `<div class="list-wrap" style="border:none;"><table class="clist"><thead><tr><th class="ltc"></th><th>ID</th><th>Name</th><th>Set</th><th>Rarity</th><th style="text-align:center;">Qty</th><th style="text-align:right;">Updated</th></tr></thead><tbody>${w
-          .map((c) => {
-            const idx = cards.indexOf(c),
-              miss = !c.qty || c.qty < 1,
-              r = rk(c.rarity),
-              sCol = sc(c.id);
-            return `<tr onclick="openModal(${idx})" class="${miss ? 'miss' : ''}" style="border-left:3px solid ${sCol};"><td class="ltc">${c.img ? `<img class="lth ${miss ? 'grey' : ''}" src="${c.img}" alt="${c.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="lth-ph" style="display:none;">?</div>` : `<div class="lth-ph">?</div>`}</td><td style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);">${c.id || '—'}</td><td class="lname">${c.name}</td><td style="font-size:0.75rem;">${c.set || '—'}</td><td><span class="badge badge-rar ${r}" style="font-size:0.53rem;">${c.rarity || '—'}</span></td><td class="lqty ${miss ? 'q0' : qcl(c)}">${c.qty}</td><td style="text-align:right;white-space:nowrap;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);padding-right:0.82rem;">${c.upd}</td></tr>`;
-          })
-          .join('')}</tbody></table></div>`;
       }
 
       // CONFIG MODAL
