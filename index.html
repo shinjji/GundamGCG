@@ -1894,6 +1894,8 @@
       }
 
       @media (max-width: 700px) {
+        .rar-long { display: none !important; }
+        .rar-short { display: inline-block !important; }
         nav {
           display: none;
         }
@@ -2667,6 +2669,21 @@
           .join('');
       }
 
+      function rarShort(r) {
+        const k = (r || '').trim().toUpperCase();
+        if (k === 'COMMON') return 'C';
+        if (k === 'COMMON+') return 'C+';
+        if (k === 'UNCOMMON') return 'U';
+        if (k === 'UNCOMMON+') return 'U+';
+        if (k === 'RARE') return 'R';
+        if (k === 'RARE+') return 'R+';
+        if (k === 'LIMITED RELEASE') return 'LR';
+        if (k === 'LIMITED RELEASE+') return 'LR+';
+        if (k === 'LIMITED RELEASE++') return 'LR++';
+        if (k === 'PROMO') return 'P';
+        return r;
+      }
+
       function renderList(f) {
         const tb = document.getElementById('collection-list-body');
         if (!f.length) {
@@ -2679,7 +2696,7 @@
               miss = !c.qty || c.qty < 1,
               r = rk(c.rarity),
               sCol = sc(c.id);
-            return `<tr class="${miss ? 'miss' : ''}" onclick="openModal(${idx})" style="border-left:3px solid ${sCol};"><td class="ltc">${c.img ? `<img class="lth ${miss ? 'grey' : ''}" src="${c.img}" alt="${c.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="lth-ph" style="display:none;">?</div>` : `<div class="lth-ph">?</div>`}</td><td style="font-family:'Share Tech Mono',monospace;font-size:0.63rem;color:var(--dim);">${c.id || '—'}</td><td class="lname">${c.name}</td><td style="font-size:0.77rem;">${c.set || '—'}</td><td><span class="badge badge-rar ${r}" style="font-size:0.56rem;">${c.rarity || '—'}</span></td><td class="lqty ${miss ? 'q0' : qcl(c)}">${c.qty}</td></tr>`;
+            return `<tr class="${miss ? 'miss' : ''}" onclick="openModal(${idx})" style="border-left:3px solid ${sCol};"><td class="ltc">${c.img ? `<img class="lth ${miss ? 'grey' : ''}" src="${c.img}" alt="${c.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="lth-ph" style="display:none;">?</div>` : `<div class="lth-ph">?</div>`}</td><td style="font-family:'Share Tech Mono',monospace;font-size:0.63rem;color:var(--dim);">${c.id || '—'}</td><td class="lname">${c.name}</td><td style="font-size:0.77rem;">${c.set || '—'}</td><td><span class="badge badge-rar ${r} rar-long" style="font-size:0.56rem;">${c.rarity || '—'}</span><span class="badge badge-rar ${r} rar-short" style="font-size:0.56rem;display:none;">${rarShort(c.rarity)}</span></td><td class="lqty ${miss ? 'q0' : qcl(c)}">${c.qty}</td></tr>`;
           })
           .join('');
       }
