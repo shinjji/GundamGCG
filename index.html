@@ -2081,7 +2081,7 @@
           <div class="fgrid">
             <div class="fgroup full"><label class="flbl">Google API Key</label><input class="finput" type="password" id="cfg-apikey" placeholder="AIza…" /></div>
             <div class="fgroup full"><label class="flbl">Spreadsheet ID</label><input class="finput" type="text" id="cfg-sheetid" placeholder="1BxiMVs0XRA5nFMd…" /></div>
-            <div class="fgroup"><label class="flbl">Sheet Name</label><input class="finput" type="text" id="cfg-sheetname" placeholder="Sheet1" /></div>
+            <div class="fgroup"><label class="flbl">Sheet Name</label><input class="finput" type="text" id="cfg-sheetname" placeholder="Gundam_Card_Game" /></div>
             <div class="fgroup"><label class="flbl">Header Row</label><input class="finput" type="number" id="cfg-headerrow" value="1" min="1" /></div>
           </div>
           <div style="display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;">
@@ -2155,7 +2155,7 @@
 
     <script>
       // CONFIG
-      let cfg = { apiKey: '', sheetId: '', sheetName: 'Sheet1', headerRow: 1, serviceKey: null, cols: null };
+      let cfg = { apiKey: '', sheetId: '', sheetName: 'Gundam_Card_Game', headerRow: 1, serviceKey: null, cols: null };
       const DC = { id: 1, name: 2, rarity: 3, set: 4, qty: 5, link: 6 };
       let cards = [],
         view = 'grid',
@@ -2192,7 +2192,7 @@
       function saveConfig() {
         cfg.apiKey = document.getElementById('cfg-apikey').value.trim();
         cfg.sheetId = document.getElementById('cfg-sheetid').value.trim();
-        cfg.sheetName = document.getElementById('cfg-sheetname').value.trim() || 'Sheet1';
+        cfg.sheetName = document.getElementById('cfg-sheetname').value.trim() || 'Gundam_Card_Game';
         cfg.headerRow = parseInt(document.getElementById('cfg-headerrow').value) || 1;
         const sk = document.getElementById('cfg-servicekey') ? document.getElementById('cfg-servicekey').value.trim() : '';
         cfg.serviceKey = sk || null;
@@ -2253,7 +2253,7 @@
       async function fetchSheet(testOnly = false) {
         const key = cfg.apiKey,
           id = cfg.sheetId,
-          sh = encodeURIComponent(cfg.sheetName || 'Sheet1'),
+          sh = encodeURIComponent(cfg.sheetName || 'Gundam_Card_Game'),
           hr = cfg.headerRow || 1;
         if (!key || !id) throw new Error('API Key and Sheet ID required');
         const resp = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${sh}?key=${key}`);
@@ -2309,7 +2309,7 @@
         }
         cfg.apiKey = document.getElementById('cfg-apikey').value.trim();
         cfg.sheetId = document.getElementById('cfg-sheetid').value.trim();
-        cfg.sheetName = document.getElementById('cfg-sheetname').value.trim() || 'Sheet1';
+        cfg.sheetName = document.getElementById('cfg-sheetname').value.trim() || 'Gundam_Card_Game';
         cfg.headerRow = parseInt(document.getElementById('cfg-headerrow').value) || 1;
         localStorage.setItem('gcg_cfg', JSON.stringify(cfg));
         setSt('loading', 'Testing connection…');
@@ -2355,7 +2355,7 @@
         if (!card.rowIndex) throw new Error('No row index');
         const token = await getToken();
         const id = cfg.sheetId,
-          sh = cfg.sheetName || 'Sheet1',
+          sh = cfg.sheetName || 'Gundam_Card_Game',
           c = cfg.cols || DC;
         const data = [];
         const qc = String.fromCharCode(64 + (c.qty || DC.qty));
